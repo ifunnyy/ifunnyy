@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="GNUseto中的autorelease实际上是用一种特殊的方法来实现的。这种方法能够高效地运行OSX, iOS应用程序中频繁调用autorelease方法，它被称为”IMP Caching”。 在进行调用时，为了解决类名/方法名以及取得方法运行时的函数指针，要在框架初始化时对其结果值进行换缓存。 12345678id autorelease_class = [NSAutoreleasePool">
+<meta name="description" content="批量替换脚本：https://github.com/ifunnyy/ipa-batch-signature-again ipa 重签的操作主要分为以下几步：  先将ipa包进行解压 删除Payload/xxx.app/_CodeSignature里面的文件 替换embedded.mobileprovision 生成entitlements.plist 进行重新签名 重新打包  假设证书和ipa包都">
 <meta property="og:type" content="article">
-<meta property="og:title" content="提高调用Objective-C方法的速度">
-<meta property="og:url" content="http://yoursite.com/2018/08/14/objective-c/提高调用Objective-C方法的速度/index.html">
+<meta property="og:title" content="ipa 重新签名">
+<meta property="og:url" content="http://yoursite.com/2018/08/16/ios/ipa重签/index.html">
 <meta property="og:site_name" content="ifunnyy">
-<meta property="og:description" content="GNUseto中的autorelease实际上是用一种特殊的方法来实现的。这种方法能够高效地运行OSX, iOS应用程序中频繁调用autorelease方法，它被称为”IMP Caching”。 在进行调用时，为了解决类名/方法名以及取得方法运行时的函数指针，要在框架初始化时对其结果值进行换缓存。 12345678id autorelease_class = [NSAutoreleasePool">
+<meta property="og:description" content="批量替换脚本：https://github.com/ifunnyy/ipa-batch-signature-again ipa 重签的操作主要分为以下几步：  先将ipa包进行解压 删除Payload/xxx.app/_CodeSignature里面的文件 替换embedded.mobileprovision 生成entitlements.plist 进行重新签名 重新打包  假设证书和ipa包都">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-14T14:24:03.652Z">
+<meta property="og:updated_time" content="2018-08-16T08:57:04.998Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="提高调用Objective-C方法的速度">
-<meta name="twitter:description" content="GNUseto中的autorelease实际上是用一种特殊的方法来实现的。这种方法能够高效地运行OSX, iOS应用程序中频繁调用autorelease方法，它被称为”IMP Caching”。 在进行调用时，为了解决类名/方法名以及取得方法运行时的函数指针，要在框架初始化时对其结果值进行换缓存。 12345678id autorelease_class = [NSAutoreleasePool">
+<meta name="twitter:title" content="ipa 重新签名">
+<meta name="twitter:description" content="批量替换脚本：https://github.com/ifunnyy/ipa-batch-signature-again ipa 重签的操作主要分为以下几步：  先将ipa包进行解压 删除Payload/xxx.app/_CodeSignature里面的文件 替换embedded.mobileprovision 生成entitlements.plist 进行重新签名 重新打包  假设证书和ipa包都">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/08/14/objective-c/提高调用Objective-C方法的速度/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/08/16/ios/ipa重签/"/>
 
 
 
 
 
-  <title>提高调用Objective-C方法的速度 | ifunnyy</title>
+  <title>ipa 重新签名 | ifunnyy</title>
   
 
 
@@ -252,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/14/objective-c/提高调用Objective-C方法的速度/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/16/ios/ipa重签/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -269,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">提高调用Objective-C方法的速度</h1>
+          <h1 class="post-title" itemprop="name headline">ipa 重新签名</h1>
         
 
         <div class="post-meta">
@@ -281,8 +281,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T13:21:00+08:00">
-                2018-08-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-16T16:56:00+08:00">
+                2018-08-16
               </time>
             
 
@@ -304,8 +304,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/objective-c/" itemprop="url" rel="index">
-                    <span itemprop="name">objective-c</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -346,11 +346,23 @@
       
 
       
-        <p>GNUseto中的autorelease实际上是用一种特殊的方法来实现的。这种方法能够高效地运行OSX, iOS应用程序中频繁调用autorelease方法，它被称为”IMP Caching”。</p>
-<p>在进行调用时，为了解决类名/方法名以及取得方法运行时的函数指针，要在框架初始化时对其结果值进行换缓存。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">id autorelease_class = [NSAutoreleasePool class];</span><br><span class="line">SEL autorelease_sel = @selector(addObject:);</span><br><span class="line">IMP autorelease_imp = [autorelease_class methodForSelector:autorelease_sel];</span><br><span class="line"></span><br><span class="line">//实际调用就是使用缓存的结果值。</span><br><span class="line">- (id)autorelease &#123;</span><br><span class="line">	(*autorelease_imp)(autorelease_class, autorelease_sel, self);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这就是IMP Caching的方法调用。虽然同一下源代码完全相同，但从运行效率上看，即使它依赖于运行环境，一般而言速度也是其他方法的2倍。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (id)autorelease &#123;</span><br><span class="line">	[NSAutorelesePool addObject:self];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>批量替换脚本：<a href="https://github.com/ifunnyy/ipa-batch-signature-again" target="_blank" rel="noopener">https://github.com/ifunnyy/ipa-batch-signature-again</a></p>
+<p>ipa 重签的操作主要分为以下几步：</p>
+<ol>
+<li>先将ipa包进行解压</li>
+<li>删除Payload/xxx.app/_CodeSignature里面的文件</li>
+<li>替换embedded.mobileprovision</li>
+<li>生成entitlements.plist</li>
+<li>进行重新签名</li>
+<li>重新打包</li>
+</ol>
+<p>假设证书和ipa包都在同个目录下</p>
+<h1 id="先将ipa包进行解压"><a href="#先将ipa包进行解压" class="headerlink" title="先将ipa包进行解压"></a>先将ipa包进行解压</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip xxx.ipa</span><br></pre></td></tr></table></figure>
+<h1 id="删除Payload-xxx-app-CodeSignature里面的文件"><a href="#删除Payload-xxx-app-CodeSignature里面的文件" class="headerlink" title="删除Payload/xxx.app/_CodeSignature里面的文件"></a>删除Payload/xxx.app/_CodeSignature里面的文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -fr Payload/xxx.app/_CodeSignature/</span><br></pre></td></tr></table></figure>
+<h1 id="替换embedded-mobileprovision"><a href="#替换embedded-mobileprovision" class="headerlink" title="替换embedded.mobileprovision"></a>替换embedded.mobileprovision</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp embedded.mobileprovision Payload/xxx.app/embedded.mobileprovision</span><br></pre></td></tr></table></figure>
+<h1 id="生成entitlements-plist"><a href="#生成entitlements-plist" class="headerlink" title="生成entitlements.plist"></a>生成entitlements.plist</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">security cms -D -i embedded.mobileprovision &gt; entitlements_full.plist</span><br><span class="line"></span><br><span class="line">/usr/libexec/PlistBuddy -x -c &apos;Print:Entitlements&apos; entitlements_full.plist &gt; entitlements.plist</span><br></pre></td></tr></table></figure>
+<h1 id="进行重新签名"><a href="#进行重新签名" class="headerlink" title="进行重新签名"></a>进行重新签名</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/codesign -f -s &quot;证书名称&quot; --entitlements entitlements.plist Payload/xxx.app/</span><br></pre></td></tr></table></figure>
+<h1 id="重新打包"><a href="#重新打包" class="headerlink" title="重新打包"></a>重新打包</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip -r xxx.ipa Payload/</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -375,8 +387,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/14/objective-c/深拷贝和浅拷贝/" rel="next" title="深拷贝和浅拷贝">
-                <i class="fa fa-chevron-left"></i> 深拷贝和浅拷贝
+              <a href="/2018/08/14/javascript/语言篇/题目/" rel="next" title="题目">
+                <i class="fa fa-chevron-left"></i> 题目
               </a>
             
           </div>
@@ -384,10 +396,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/14/objective-c/在MRC下的内存管理/" rel="prev" title="在MRC下的内存管理">
-                在MRC下的内存管理 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -439,8 +447,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -495,6 +512,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#先将ipa包进行解压"><span class="nav-number">1.</span> <span class="nav-text">先将ipa包进行解压</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除Payload-xxx-app-CodeSignature里面的文件"><span class="nav-number">2.</span> <span class="nav-text">删除Payload/xxx.app/_CodeSignature里面的文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#替换embedded-mobileprovision"><span class="nav-number">3.</span> <span class="nav-text">替换embedded.mobileprovision</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生成entitlements-plist"><span class="nav-number">4.</span> <span class="nav-text">生成entitlements.plist</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进行重新签名"><span class="nav-number">5.</span> <span class="nav-text">进行重新签名</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重新打包"><span class="nav-number">6.</span> <span class="nav-text">重新打包</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
