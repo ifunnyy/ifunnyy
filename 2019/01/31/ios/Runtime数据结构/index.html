@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据结构 objc_object 对象   objc_class 类，类对象   isa指针 共用体isa_t   method_t 方法定义    objc_object 平时我们使用的所有对象都是id类型的，对应runtime中objc_object结构体   isa_t 共用体   关于isa操作相关 比如通过objc_object这个结构体来获取它的isa所指向的类对象，包括通过类对象的i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="runtime数据结构">
+<meta property="og:url" content="http://yoursite.com/2019/01/31/ios/Runtime数据结构/index.html">
+<meta property="og:site_name" content="ifunnyy">
+<meta property="og:description" content="数据结构 objc_object 对象   objc_class 类，类对象   isa指针 共用体isa_t   method_t 方法定义    objc_object 平时我们使用的所有对象都是id类型的，对应runtime中objc_object结构体   isa_t 共用体   关于isa操作相关 比如通过objc_object这个结构体来获取它的isa所指向的类对象，包括通过类对象的i">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/01/31/ios/Runtime数据结构/33070F0E-F45F-4BC1-AFD5-9E3176410E83.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/31/ios/Runtime数据结构/858A8E75-50E2-461F-B5CD-43460D412F88.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/31/ios/Runtime数据结构/507F59A9-A72C-4961-B9D6-2E7506D96C66.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/31/ios/Runtime数据结构/62E55D07-5139-4E95-BFEE-3673E274409E.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/31/ios/Runtime数据结构/D7BDBFEA-4BDF-4730-BB82-C954073E1433.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/31/ios/Runtime数据结构/7B5FAA7A-0985-4E79-AD36-32E0C5D5A81B.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/31/ios/Runtime数据结构/6D6C466F-8252-40EC-AE60-199083A66373.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/31/ios/Runtime数据结构/F7127E65-A1D1-4D2C-8DD4-ABB48969BE5C.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/31/ios/Runtime数据结构/64D2B528-5AD9-42C3-B109-FB012EC19DB6.png">
+<meta property="og:updated_time" content="2019-01-30T16:14:49.830Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="runtime数据结构">
+<meta name="twitter:description" content="数据结构 objc_object 对象   objc_class 类，类对象   isa指针 共用体isa_t   method_t 方法定义    objc_object 平时我们使用的所有对象都是id类型的，对应runtime中objc_object结构体   isa_t 共用体   关于isa操作相关 比如通过objc_object这个结构体来获取它的isa所指向的类对象，包括通过类对象的i">
+<meta name="twitter:image" content="http://yoursite.com/2019/01/31/ios/Runtime数据结构/33070F0E-F45F-4BC1-AFD5-9E3176410E83.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: false,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/31/ios/Runtime数据结构/"/>
+
+
+
+
+
+  <title>runtime数据结构 | ifunnyy</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?95e48dc1b0014483f90b963827cc265d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ifunnyy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/ios/Runtime数据结构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ifunnyy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">runtime数据结构</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T00:12:00+08:00">
+                2019-01-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><ul>
+<li>objc_object<ul>
+<li>对象</li>
+</ul>
+</li>
+<li>objc_class<ul>
+<li>类，类对象</li>
+</ul>
+</li>
+<li>isa指针<ul>
+<li>共用体isa_t</li>
+</ul>
+</li>
+<li>method_t<ul>
+<li>方法定义</li>
+</ul>
+</li>
+</ul>
+<h2 id="objc-object"><a href="#objc-object" class="headerlink" title="objc_object"></a>objc_object</h2><p><img src="33070F0E-F45F-4BC1-AFD5-9E3176410E83.png" alt="33070F0E-F45F-4BC1-AFD5-9E3176410E83"></p>
+<font color="green">平时我们使用的所有对象都是id类型的，对应runtime中objc_object结构体</font>
+
+<ul>
+<li>isa_t<ul>
+<li>共用体</li>
+</ul>
+</li>
+<li>关于isa操作相关<ul>
+<li>比如通过objc_object这个结构体来获取它的isa所指向的类对象，包括通过类对象的isa指针获取它的元类对象</li>
+</ul>
+</li>
+<li>弱引用相关<ul>
+<li>比如标记一个对象是否曾经弱引用指针</li>
+</ul>
+</li>
+<li>关联对象相关<ul>
+<li>比如这个对象我们为它设置了一些关联属性和关联方法</li>
+</ul>
+</li>
+<li>内存管理相关<ul>
+<li>比如MRC下的retain和release，或者ARC和MRC下都可以用到的autoreleasepool</li>
+</ul>
+</li>
+</ul>
+<h2 id="objc-class"><a href="#objc-class" class="headerlink" title="objc_class"></a>objc_class</h2><p><img src="858A8E75-50E2-461F-B5CD-43460D412F88.png" alt="858A8E75-50E2-461F-B5CD-43460D412F88"></p>
+<font color="green">OC中所使用的Class实际上对应的是runtime中objc_class这个结构体</font>
+
+<font color="red">objc_class继承自objc_object，所以Class是个对象，类对象</font>
+
+<ul>
+<li><font color="red">Class</font> superClass<ul>
+<li>指向父类对象</li>
+</ul>
+</li>
+<li><p><font color="red">cache_t</font> cache</p>
+<ul>
+<li>方法缓存结构</li>
+</ul>
+</li>
+<li><p><font color="red">class_data_bits_t</font> bits</p>
+<ul>
+<li>实际关于一个类定义所定义的变量、属性，包括方法都在bits里面</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>（面试题）Class是否是对象</p>
+<p>​    是，类对象，因为它继承自objc_object。</p>
+</blockquote>
+<h2 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h2><p>共用体isa_t</p>
+<p><img src="507F59A9-A72C-4961-B9D6-2E7506D96C66.png" alt="507F59A9-A72C-4961-B9D6-2E7506D96C66"></p>
+<font color="green">isa_t在32位或者64位架构上面，实际下都是一串32位或者64位0或者1数字</font>
+
+<ul>
+<li>指针型isa<ul>
+<li>isa的值代表Class的地址</li>
+</ul>
+</li>
+<li>非指针型isa<ul>
+<li>isa的值的部分代表Class的地址</li>
+<li>剩下的部分可以存储一些其他内容来达到节省内存的目的</li>
+</ul>
+</li>
+</ul>
+<h2 id="isa指向"><a href="#isa指向" class="headerlink" title="isa指向"></a>isa指向</h2><ul>
+<li>关于<font color="red">对象</font>，其指向<font color="red">类对象</font>。<ul>
+<li>实例   —isa—&gt;   Class</li>
+<li>我们通过一个<font color="red">实例</font>去调用<font color="red">实例方法</font>，就是通过<font color="red">对象的isa指针</font>到它的<font color="red">类对象</font>进行方法查找</li>
+</ul>
+</li>
+<li>关于<font color="red">类对象</font>，其指向<font color="red">元类对象（MeteClass）</font>。<ul>
+<li>Class   —isa—&gt;   MetaClass</li>
+<li>我们通过一个<font color="red">类</font>去调用<font color="red">类方法</font>，就是通过<font color="red">类对象的isa指针</font>到它的<font color="red">元类</font>去进行方法查找</li>
+</ul>
+</li>
+</ul>
+<h2 id="cache-t"><a href="#cache-t" class="headerlink" title="cache_t"></a>cache_t</h2><ul>
+<li>用于<font color="red">快速</font>查找方法执行函数<ul>
+<li>比如我们调用一个方法的时候，如果之前调用并缓存起来，就不用到方法列表进行遍历查找</li>
+</ul>
+</li>
+<li>是可<font color="red">增量扩展</font>的<font color="red">哈希表</font>结构<ul>
+<li>会根据存储增量去扩大内存空间</li>
+<li>用哈希表是为了增加查找效率</li>
+</ul>
+</li>
+<li>是<font color="red">局部性原理</font>的最佳应用<ul>
+<li>把平时调用频次最高的方法放在缓存中</li>
+<li>时间局部性是指被引用过的存储器位置很可能会被再次引用</li>
+<li>空间局部性是指被引用过的存储器位置附近的数据很可能将被引用</li>
+</ul>
+</li>
+</ul>
+<p><img src="62E55D07-5139-4E95-BFEE-3673E274409E.png" alt="62E55D07-5139-4E95-BFEE-3673E274409E"></p>
+<h2 id="class-data-bits-t"><a href="#class-data-bits-t" class="headerlink" title="class_data_bits_t"></a>class_data_bits_t</h2><ul>
+<li><font color="red">class_data_bits_t</font>主要是对<font color="red">class_rw_t</font>的封装<ul>
+<li>class_rw_t<font color="red">可读可写</font>，就说明我们可以随时创建分类来给这个类添加属性和方法</li>
+</ul>
+</li>
+<li><font color="red">class_rw_t</font>代表了类相关的<font color="red">读写</font>信息，对<font color="red">class_ro_t</font>的封装<ul>
+<li>class_ro_t<font color="red">只读</font>，当我们创建一个类的时候为它添加的成员变量和方法列表，在之后就没办法修改了</li>
+</ul>
+</li>
+<li><font color="red">class_ro_t</font>代表了类相关的<font color="red">只读</font>信息</li>
+</ul>
+<h2 id="class-rw-t"><a href="#class-rw-t" class="headerlink" title="class_rw_t"></a>class_rw_t</h2><p><img src="D7BDBFEA-4BDF-4730-BB82-C954073E1433.png" alt="D7BDBFEA-4BDF-4730-BB82-C954073E1433"></p>
+<font color="green">我们在为一个类添加分类的协议、属性和方法就是对应上图的protocols、properties和methods</font>
+
+<p>protocols、properties和methods这三个结构都<font color="red">继承</font>于list_array_tt这个<font color="red">二维数组</font></p>
+<h2 id="class-ro-t"><a href="#class-ro-t" class="headerlink" title="class_ro_t"></a>class_ro_t</h2><p><img src="7B5FAA7A-0985-4E79-AD36-32E0C5D5A81B.png" alt="7B5FAA7A-0985-4E79-AD36-32E0C5D5A81B"></p>
+<ul>
+<li>name：类名。<ul>
+<li>平时我们用的NSClassFromString(@”ClassName”)，通过String获取一个类</li>
+</ul>
+</li>
+<li>ivars：类的成员变量</li>
+<li>properties：类的属性<ul>
+<li><font color="red">原始定义的属性</font></li>
+</ul>
+</li>
+<li>protocols：类遵从的协议<ul>
+<li><font color="red">原始遵从的协议</font></li>
+</ul>
+</li>
+<li>methodList：类添加的方法列表<ul>
+<li><font color="red">原始定义的方法</font></li>
+<li>class_ro_t的方法列表和class_rw_t的方法列表是有区别的，前者是一维数组，后者是二维数组</li>
+</ul>
+</li>
+</ul>
+<h2 id="method-t"><a href="#method-t" class="headerlink" title="method_t"></a>method_t</h2><p><img src="6D6C466F-8252-40EC-AE60-199083A66373.png" alt="6D6C466F-8252-40EC-AE60-199083A66373"></p>
+<ul>
+<li>IMP：无类型的函数指针，函数体。<ul>
+<li>IMP指针是指向实现函数的指针, 通过SEL取得IMP, objc_msgSend来执行实现方法。</li>
+</ul>
+</li>
+</ul>
+<h2 id="Type-Encodings"><a href="#Type-Encodings" class="headerlink" title="Type Encodings"></a>Type Encodings</h2><p><img src="F7127E65-A1D1-4D2C-8DD4-ABB48969BE5C.png" alt="F7127E65-A1D1-4D2C-8DD4-ABB48969BE5C"></p>
+<ul>
+<li>const char *types;<ul>
+<li>不可变的字符指针</li>
+<li>第一位永远都是函数的返回值</li>
+</ul>
+</li>
+</ul>
+<font color="green">调用一个方法，在runtime层面上都会转成objc_msgsend这样的函数调用，函数调用的第一个参数和第二个参数是固定的，并且是不可变的，第一个参数必须是id类型的，为消息的接收者，比如self这个对象，第二个是选择器SEL。</font>
+
+<h1 id="整体数据结构"><a href="#整体数据结构" class="headerlink" title="整体数据结构"></a>整体数据结构</h1><p><img src="64D2B528-5AD9-42C3-B109-FB012EC19DB6.png" alt="64D2B528-5AD9-42C3-B109-FB012EC19DB6"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/16/ios/ipa重签/" rel="next" title="ipa 重新签名">
+                <i class="fa fa-chevron-left"></i> ipa 重新签名
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Johnny" />
+            
+              <p class="site-author-name" itemprop="name">Johnny</p>
+              <p class="site-description motion-element" itemprop="description">仰天大笑出门去 我辈岂是蓬蒿人</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据结构"><span class="nav-number">1.</span> <span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#objc-object"><span class="nav-number">1.1.</span> <span class="nav-text">objc_object</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#objc-class"><span class="nav-number">1.2.</span> <span class="nav-text">objc_class</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#isa指针"><span class="nav-number">1.3.</span> <span class="nav-text">isa指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#isa指向"><span class="nav-number">1.4.</span> <span class="nav-text">isa指向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cache-t"><span class="nav-number">1.5.</span> <span class="nav-text">cache_t</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class-data-bits-t"><span class="nav-number">1.6.</span> <span class="nav-text">class_data_bits_t</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class-rw-t"><span class="nav-number">1.7.</span> <span class="nav-text">class_rw_t</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class-ro-t"><span class="nav-number">1.8.</span> <span class="nav-text">class_ro_t</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method-t"><span class="nav-number">1.9.</span> <span class="nav-text">method_t</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Type-Encodings"><span class="nav-number">1.10.</span> <span class="nav-text">Type Encodings</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#整体数据结构"><span class="nav-number">2.</span> <span class="nav-text">整体数据结构</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"> ifunnyy | Johnny</span>
+
+  
+</div>
+
+
+  <div class="powered-by"> _(:з」∠)_</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">博客 &mdash;  v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
