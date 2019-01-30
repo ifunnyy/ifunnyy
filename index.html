@@ -363,7 +363,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="objc-object"><a href="#objc-object" class="headerlink" title="objc_object"></a>objc_object</h2><p><img src="/2019/01/31/ios/Runtime数据结构/img/33070F0E-F45F-4BC1-AFD5-9E3176410E83.png" alt="33070F0E-F45F-4BC1-AFD5-9E3176410E83"></p>
+<h2 id="objc-object"><a href="#objc-object" class="headerlink" title="objc_object"></a>objc_object</h2><p><img src="/2019/01/31/ios/Runtime数据结构/33070F0E-F45F-4BC1-AFD5-9E3176410E83.png" alt="33070F0E-F45F-4BC1-AFD5-9E3176410E83"></p>
 <font color="green">平时我们使用的所有对象都是id类型的，对应runtime中objc_object结构体</font>
 
 <ul>
@@ -388,7 +388,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="objc-class"><a href="#objc-class" class="headerlink" title="objc_class"></a>objc_class</h2><p><img src="/2019/01/31/ios/Runtime数据结构/img/858A8E75-50E2-461F-B5CD-43460D412F88.png" alt="858A8E75-50E2-461F-B5CD-43460D412F88"></p>
+<h2 id="objc-class"><a href="#objc-class" class="headerlink" title="objc_class"></a>objc_class</h2><p><img src="/2019/01/31/ios/Runtime数据结构/858A8E75-50E2-461F-B5CD-43460D412F88.png" alt="858A8E75-50E2-461F-B5CD-43460D412F88"></p>
 <font color="green">OC中所使用的Class实际上对应的是runtime中objc_class这个结构体</font>
 
 <font color="red">objc_class继承自objc_object，所以Class是个对象，类对象</font>
@@ -414,7 +414,7 @@
 <p>​    是，类对象，因为它继承自objc_object。</p>
 </blockquote>
 <h2 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h2><p>共用体isa_t</p>
-<p><img src="/2019/01/31/ios/Runtime数据结构/img/507F59A9-A72C-4961-B9D6-2E7506D96C66.png" alt="507F59A9-A72C-4961-B9D6-2E7506D96C66"></p>
+<p><img src="/2019/01/31/ios/Runtime数据结构/507F59A9-A72C-4961-B9D6-2E7506D96C66.png" alt="507F59A9-A72C-4961-B9D6-2E7506D96C66"></p>
 <font color="green">isa_t在32位或者64位架构上面，实际下都是一串32位或者64位0或者1数字</font>
 
 <ul>
@@ -457,7 +457,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="/2019/01/31/ios/Runtime数据结构/img/62E55D07-5139-4E95-BFEE-3673E274409E.png" alt="62E55D07-5139-4E95-BFEE-3673E274409E"></p>
+<p><img src="/2019/01/31/ios/Runtime数据结构/62E55D07-5139-4E95-BFEE-3673E274409E.png" alt="62E55D07-5139-4E95-BFEE-3673E274409E"></p>
 <h2 id="class-data-bits-t"><a href="#class-data-bits-t" class="headerlink" title="class_data_bits_t"></a>class_data_bits_t</h2><ul>
 <li><font color="red">class_data_bits_t</font>主要是对<font color="red">class_rw_t</font>的封装<ul>
 <li>class_rw_t<font color="red">可读可写</font>，就说明我们可以随时创建分类来给这个类添加属性和方法</li>
@@ -469,11 +469,11 @@
 </li>
 <li><font color="red">class_ro_t</font>代表了类相关的<font color="red">只读</font>信息</li>
 </ul>
-<h2 id="class-rw-t"><a href="#class-rw-t" class="headerlink" title="class_rw_t"></a>class_rw_t</h2><p><img src="/2019/01/31/ios/Runtime数据结构/img/D7BDBFEA-4BDF-4730-BB82-C954073E1433.png" alt="D7BDBFEA-4BDF-4730-BB82-C954073E1433"></p>
+<h2 id="class-rw-t"><a href="#class-rw-t" class="headerlink" title="class_rw_t"></a>class_rw_t</h2><p><img src="/2019/01/31/ios/Runtime数据结构/D7BDBFEA-4BDF-4730-BB82-C954073E1433.png" alt="D7BDBFEA-4BDF-4730-BB82-C954073E1433"></p>
 <font color="green">我们在为一个类添加分类的协议、属性和方法就是对应上图的protocols、properties和methods</font>
 
 <p>protocols、properties和methods这三个结构都<font color="red">继承</font>于list_array_tt这个<font color="red">二维数组</font></p>
-<h2 id="class-ro-t"><a href="#class-ro-t" class="headerlink" title="class_ro_t"></a>class_ro_t</h2><p><img src="/2019/01/31/ios/Runtime数据结构/img/7B5FAA7A-0985-4E79-AD36-32E0C5D5A81B.png" alt="7B5FAA7A-0985-4E79-AD36-32E0C5D5A81B"></p>
+<h2 id="class-ro-t"><a href="#class-ro-t" class="headerlink" title="class_ro_t"></a>class_ro_t</h2><p><img src="/2019/01/31/ios/Runtime数据结构/7B5FAA7A-0985-4E79-AD36-32E0C5D5A81B.png" alt="7B5FAA7A-0985-4E79-AD36-32E0C5D5A81B"></p>
 <ul>
 <li>name：类名。<ul>
 <li>平时我们用的NSClassFromString(@”ClassName”)，通过String获取一个类</li>
@@ -494,14 +494,14 @@
 </ul>
 </li>
 </ul>
-<h2 id="method-t"><a href="#method-t" class="headerlink" title="method_t"></a>method_t</h2><p><img src="/2019/01/31/ios/Runtime数据结构/img/6D6C466F-8252-40EC-AE60-199083A66373.png" alt="6D6C466F-8252-40EC-AE60-199083A66373"></p>
+<h2 id="method-t"><a href="#method-t" class="headerlink" title="method_t"></a>method_t</h2><p><img src="/2019/01/31/ios/Runtime数据结构/6D6C466F-8252-40EC-AE60-199083A66373.png" alt="6D6C466F-8252-40EC-AE60-199083A66373"></p>
 <ul>
 <li>IMP：无类型的函数指针，函数体。<ul>
 <li>IMP指针是指向实现函数的指针, 通过SEL取得IMP, objc_msgSend来执行实现方法。</li>
 </ul>
 </li>
 </ul>
-<h2 id="Type-Encodings"><a href="#Type-Encodings" class="headerlink" title="Type Encodings"></a>Type Encodings</h2><p><img src="/2019/01/31/ios/Runtime数据结构/img/F7127E65-A1D1-4D2C-8DD4-ABB48969BE5C.png" alt="F7127E65-A1D1-4D2C-8DD4-ABB48969BE5C"></p>
+<h2 id="Type-Encodings"><a href="#Type-Encodings" class="headerlink" title="Type Encodings"></a>Type Encodings</h2><p><img src="/2019/01/31/ios/Runtime数据结构/F7127E65-A1D1-4D2C-8DD4-ABB48969BE5C.png" alt="F7127E65-A1D1-4D2C-8DD4-ABB48969BE5C"></p>
 <ul>
 <li>const char *types;<ul>
 <li>不可变的字符指针</li>
@@ -511,7 +511,7 @@
 </ul>
 <font color="green">调用一个方法，在runtime层面上都会转成objc_msgsend这样的函数调用，函数调用的第一个参数和第二个参数是固定的，并且是不可变的，第一个参数必须是id类型的，为消息的接收者，比如self这个对象，第二个是选择器SEL。</font>
 
-<h1 id="整体数据结构"><a href="#整体数据结构" class="headerlink" title="整体数据结构"></a>整体数据结构</h1><p><img src="/2019/01/31/ios/Runtime数据结构/img/64D2B528-5AD9-42C3-B109-FB012EC19DB6.png" alt="64D2B528-5AD9-42C3-B109-FB012EC19DB6"></p>
+<h1 id="整体数据结构"><a href="#整体数据结构" class="headerlink" title="整体数据结构"></a>整体数据结构</h1><p><img src="/2019/01/31/ios/Runtime数据结构/64D2B528-5AD9-42C3-B109-FB012EC19DB6.png" alt="64D2B528-5AD9-42C3-B109-FB012EC19DB6"></p>
 
           
         
