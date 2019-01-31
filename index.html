@@ -252,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/代理（Delegate）/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/KVC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -271,7 +271,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/31/objective-c/代理（Delegate）/" itemprop="url">代理（Delegate）</a></h1>
+                <a class="post-title-link" href="/2019/01/31/objective-c/KVC/" itemprop="url">KVC</a></h1>
         
 
         <div class="post-meta">
@@ -345,174 +345,31 @@
       
         
           
-            <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><ul>
-<li>准确的说是一种软件设计模式，代理模式。</li>
-<li>iOS当中以@protocol形式体现。</li>
-<li>传递方式一对一。</li>
-</ul>
-<h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1><p><img src="/2019/01/31/objective-c/代理（Delegate）/img/87C791CA-59A6-4E99-94DF-1D651AC292F5.png" alt="87C791CA-59A6-4E99-94DF-1D651AC292F5"></p>
+            <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>KVC是Key-value coding的缩写。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (id)valueForKey:(NSString *)key;</span><br><span class="line"></span><br><span class="line">- (void)setValue:(id)value forKey:(NSString *)key;</span><br></pre></td></tr></table></figure>
+<h1 id="valueForKey实现逻辑"><a href="#valueForKey实现逻辑" class="headerlink" title="valueForKey实现逻辑"></a>valueForKey实现逻辑</h1><p><img src="/2019/01/31/objective-c/KVC/DA2C8749-9361-42F9-91A0-4CFE33CF234B.png" alt="DA2C8749-9361-42F9-91A0-4CFE33CF234B"></p>
+<ol>
+<li>系统会判断通过这个key访问的实例变量是否有相应的get方法，有则调用并返回。</li>
+<li>没有则会判断实例变量是否存在，存在则获取值并返回。</li>
+<li>不存在则会调用valueForUndefinedKey:方法并抛出NSUndefinedKeyException这个未定义key的异常。</li>
+</ol>
 <blockquote>
-<p>（面试题）代理中的方法是必须实现的么</p>
-<p>​    不一定，看方法的标识，如果是@required的话就是必须实现，@optional就是可选实现。</p>
+<p>关于实例变量是否存在，系统提供了一个可屏蔽的开关+ (BOOL)accessInstanceVariablesDirctly，这个方法默认实现返回的是YES，也就是说与我们这个key相同或者相似的一个成员变量是存在的，那我们认为这个成员变量是存在的，如果我们重写这个方法返回NO，即使我们访问这个key同名的成员变量是存在的，那么我们也没有办法通过这个key去获取对应的值。</p>
 </blockquote>
-<h1 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h1><ul>
-<li><p>一般代理的声明为weak，以规避循环引用。</p>
-<p><img src="/2019/01/31/objective-c/代理（Delegate）/img/DE364D42-639E-4A37-A50E-C535116F815E.png" alt="DE364D42-639E-4A37-A50E-C535116F815E"></p>
-</li>
+<h2 id="Accessor-Method-is-exist-（访问器方法是否存在）"><a href="#Accessor-Method-is-exist-（访问器方法是否存在）" class="headerlink" title="Accessor Method is exist （访问器方法是否存在）"></a>Accessor Method is exist （访问器方法是否存在）</h2><p>遵循key相同或者相似原则</p>
+<ul>
+<li><getkey>    get方法，满足驼峰命名</getkey></li>
+<li><key>        属性名称</key></li>
+<li><iskey>     对应的成员变量</iskey></li>
 </ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/Objective-C面试总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ifunnyy">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/31/objective-c/Objective-C面试总结/" itemprop="url">Objective-C面试总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T13:46:00+08:00">
-                2019-01-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/objective-c/" itemprop="url" rel="index">
-                    <span itemprop="name">objective-c</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="技术要点"><a href="#技术要点" class="headerlink" title="技术要点"></a>技术要点</h1><p><img src="/2019/01/31/objective-c/Objective-C面试总结/img/0E637EBC-F541-4B4B-8BC5-D325F92746F7.png" alt="0E637EBC-F541-4B4B-8BC5-D325F92746F7"></p>
-<h1 id="笔试面试题"><a href="#笔试面试题" class="headerlink" title="笔试面试题"></a>笔试面试题</h1><h2 id="MRC下如何重写retain修饰变量的setter方法？"><a href="#MRC下如何重写retain修饰变量的setter方法？" class="headerlink" title="MRC下如何重写retain修饰变量的setter方法？"></a>MRC下如何重写retain修饰变量的setter方法？</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatiomic, retain) id obj;</span><br><span class="line">- (void)setObj:(id)obj &#123;</span><br><span class="line">    // 为啥要加这个判断，因为如果obj是_obj的话，在下面[_obj release]的时候就会把自己本身给释放掉，这时候程序就会出现异常奔溃。</span><br><span class="line">    if (_obj != obj) &#123;</span><br><span class="line">        [_obj release];</span><br><span class="line">        _obj = [obj retain];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="请简述分类实现原理"><a href="#请简述分类实现原理" class="headerlink" title="请简述分类实现原理"></a>请简述分类实现原理</h2><p>分类实现原理是由运行时来决议的，然后不同分类含有同名方法最后由谁实现取决于最后参与编译的是哪个分类，如果分类添加的方法刚好是宿主类的同名方法，那分类方法会覆盖宿主类的同名方法，这里的覆盖只是由于消息传递的过程中优先查找数组靠前位置的同名方法。实际上宿主类同名方法是存在的。</p>
-<h2 id="KVO内部实现原理"><a href="#KVO内部实现原理" class="headerlink" title="KVO内部实现原理"></a>KVO内部实现原理</h2><p>比如某个类调用addObserver:forKeyPath:这个方法后，系统就会在运行时动态创建该类的一个派生类NSNotifying，这个派生类会重写基类中任何被观察属性的setter方法。通过重写的setter方法实现真正的通知机制。(A-&gt;NSNotifying_A)</p>
-<h2 id="Foundation对象与Core-Foundation对象有什么区别"><a href="#Foundation对象与Core-Foundation对象有什么区别" class="headerlink" title="Foundation对象与Core Foundation对象有什么区别"></a>Foundation对象与Core Foundation对象有什么区别</h2><ul>
-<li>Foundation对象是OC的，Core Foundation对象是C对象的</li>
-<li>数据类型之间的转换<ul>
-<li>ARC: <code>__bridge_retained</code>、<code>__bridge_transfer</code></li>
-<li>非ARC：<code>__bridge</code></li>
+<h2 id="Instance-var-（实例变量）"><a href="#Instance-var-（实例变量）" class="headerlink" title="Instance var （实例变量）"></a>Instance var （实例变量）</h2><p>同名的实例变量或者相似名称的成员变量</p>
+<ul>
+<li>_key</li>
+<li>_isKey</li>
+<li>key</li>
+<li>isKey</li>
 </ul>
-</li>
-</ul>
+<h1 id="setValue-ForKey-实现逻辑"><a href="#setValue-ForKey-实现逻辑" class="headerlink" title="setValue:ForKey:实现逻辑"></a>setValue:ForKey:实现逻辑</h1><p><img src="/2019/01/31/objective-c/KVC/389857C5-75F4-4B27-913C-39D93D39C9F5.png" alt="389857C5-75F4-4B27-913C-39D93D39C9F5"></p>
 
           
         
@@ -660,7 +517,7 @@
 <li><p>Apple使用了isa混写（<font color="red">isa-swizzling</font>）来实现KVO。</p>
 <h1 id="机制和原理"><a href="#机制和原理" class="headerlink" title="机制和原理"></a>机制和原理</h1></li>
 </ul>
-<p><img src="/2019/01/31/objective-c/KVO/img/1FB3AECC-19BC-4F08-823E-8504AE7F0E71.png" alt="1FB3AECC-19BC-4F08-823E-8504AE7F0E71"></p>
+<p><img src="/2019/01/31/objective-c/KVO/1FB3AECC-19BC-4F08-823E-8504AE7F0E71.png" alt="1FB3AECC-19BC-4F08-823E-8504AE7F0E71"></p>
 <ol>
 <li><p>当我们注册一个对象的观察者，实际上是调用了系统的addObserver:forKeyPath…这样的方法。</p>
 </li>
@@ -758,7 +615,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/KVC/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/Objective-C面试总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -777,7 +634,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/31/objective-c/KVC/" itemprop="url">KVC</a></h1>
+                <a class="post-title-link" href="/2019/01/31/objective-c/Objective-C面试总结/" itemprop="url">Objective-C面试总结</a></h1>
         
 
         <div class="post-meta">
@@ -851,31 +708,174 @@
       
         
           
-            <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>KVC是Key-value coding的缩写。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (id)valueForKey:(NSString *)key;</span><br><span class="line"></span><br><span class="line">- (void)setValue:(id)value forKey:(NSString *)key;</span><br></pre></td></tr></table></figure>
-<h1 id="valueForKey实现逻辑"><a href="#valueForKey实现逻辑" class="headerlink" title="valueForKey实现逻辑"></a>valueForKey实现逻辑</h1><p><img src="/2019/01/31/objective-c/KVC/img/DA2C8749-9361-42F9-91A0-4CFE33CF234B.png" alt="DA2C8749-9361-42F9-91A0-4CFE33CF234B"></p>
-<ol>
-<li>系统会判断通过这个key访问的实例变量是否有相应的get方法，有则调用并返回。</li>
-<li>没有则会判断实例变量是否存在，存在则获取值并返回。</li>
-<li>不存在则会调用valueForUndefinedKey:方法并抛出NSUndefinedKeyException这个未定义key的异常。</li>
-</ol>
+            <h1 id="技术要点"><a href="#技术要点" class="headerlink" title="技术要点"></a>技术要点</h1><p><img src="/2019/01/31/objective-c/Objective-C面试总结/0E637EBC-F541-4B4B-8BC5-D325F92746F7.png" alt="0E637EBC-F541-4B4B-8BC5-D325F92746F7"></p>
+<h1 id="笔试面试题"><a href="#笔试面试题" class="headerlink" title="笔试面试题"></a>笔试面试题</h1><h2 id="MRC下如何重写retain修饰变量的setter方法？"><a href="#MRC下如何重写retain修饰变量的setter方法？" class="headerlink" title="MRC下如何重写retain修饰变量的setter方法？"></a>MRC下如何重写retain修饰变量的setter方法？</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatiomic, retain) id obj;</span><br><span class="line">- (void)setObj:(id)obj &#123;</span><br><span class="line">    // 为啥要加这个判断，因为如果obj是_obj的话，在下面[_obj release]的时候就会把自己本身给释放掉，这时候程序就会出现异常奔溃。</span><br><span class="line">    if (_obj != obj) &#123;</span><br><span class="line">        [_obj release];</span><br><span class="line">        _obj = [obj retain];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="请简述分类实现原理"><a href="#请简述分类实现原理" class="headerlink" title="请简述分类实现原理"></a>请简述分类实现原理</h2><p>分类实现原理是由运行时来决议的，然后不同分类含有同名方法最后由谁实现取决于最后参与编译的是哪个分类，如果分类添加的方法刚好是宿主类的同名方法，那分类方法会覆盖宿主类的同名方法，这里的覆盖只是由于消息传递的过程中优先查找数组靠前位置的同名方法。实际上宿主类同名方法是存在的。</p>
+<h2 id="KVO内部实现原理"><a href="#KVO内部实现原理" class="headerlink" title="KVO内部实现原理"></a>KVO内部实现原理</h2><p>比如某个类调用addObserver:forKeyPath:这个方法后，系统就会在运行时动态创建该类的一个派生类NSNotifying，这个派生类会重写基类中任何被观察属性的setter方法。通过重写的setter方法实现真正的通知机制。(A-&gt;NSNotifying_A)</p>
+<h2 id="Foundation对象与Core-Foundation对象有什么区别"><a href="#Foundation对象与Core-Foundation对象有什么区别" class="headerlink" title="Foundation对象与Core Foundation对象有什么区别"></a>Foundation对象与Core Foundation对象有什么区别</h2><ul>
+<li>Foundation对象是OC的，Core Foundation对象是C对象的</li>
+<li>数据类型之间的转换<ul>
+<li>ARC: <code>__bridge_retained</code>、<code>__bridge_transfer</code></li>
+<li>非ARC：<code>__bridge</code></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/代理（Delegate）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ifunnyy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/31/objective-c/代理（Delegate）/" itemprop="url">代理（Delegate）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T13:46:00+08:00">
+                2019-01-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/objective-c/" itemprop="url" rel="index">
+                    <span itemprop="name">objective-c</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><ul>
+<li>准确的说是一种软件设计模式，代理模式。</li>
+<li>iOS当中以@protocol形式体现。</li>
+<li>传递方式一对一。</li>
+</ul>
+<h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1><p><img src="/2019/01/31/objective-c/代理（Delegate）/87C791CA-59A6-4E99-94DF-1D651AC292F5.png" alt="87C791CA-59A6-4E99-94DF-1D651AC292F5"></p>
 <blockquote>
-<p>关于实例变量是否存在，系统提供了一个可屏蔽的开关+ (BOOL)accessInstanceVariablesDirctly，这个方法默认实现返回的是YES，也就是说与我们这个key相同或者相似的一个成员变量是存在的，那我们认为这个成员变量是存在的，如果我们重写这个方法返回NO，即使我们访问这个key同名的成员变量是存在的，那么我们也没有办法通过这个key去获取对应的值。</p>
+<p>（面试题）代理中的方法是必须实现的么</p>
+<p>​    不一定，看方法的标识，如果是@required的话就是必须实现，@optional就是可选实现。</p>
 </blockquote>
-<h2 id="Accessor-Method-is-exist-（访问器方法是否存在）"><a href="#Accessor-Method-is-exist-（访问器方法是否存在）" class="headerlink" title="Accessor Method is exist （访问器方法是否存在）"></a>Accessor Method is exist （访问器方法是否存在）</h2><p>遵循key相同或者相似原则</p>
-<ul>
-<li><getkey>    get方法，满足驼峰命名</getkey></li>
-<li><key>        属性名称</key></li>
-<li><iskey>     对应的成员变量</iskey></li>
+<h1 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h1><ul>
+<li><p>一般代理的声明为weak，以规避循环引用。</p>
+<p><img src="/2019/01/31/objective-c/代理（Delegate）/DE364D42-639E-4A37-A50E-C535116F815E.png" alt="DE364D42-639E-4A37-A50E-C535116F815E"></p>
+</li>
 </ul>
-<h2 id="Instance-var-（实例变量）"><a href="#Instance-var-（实例变量）" class="headerlink" title="Instance var （实例变量）"></a>Instance var （实例变量）</h2><p>同名的实例变量或者相似名称的成员变量</p>
-<ul>
-<li>_key</li>
-<li>_isKey</li>
-<li>key</li>
-<li>isKey</li>
-</ul>
-<h1 id="setValue-ForKey-实现逻辑"><a href="#setValue-ForKey-实现逻辑" class="headerlink" title="setValue:ForKey:实现逻辑"></a>setValue:ForKey:实现逻辑</h1><p><img src="/2019/01/31/objective-c/KVC/img/389857C5-75F4-4B27-913C-39D93D39C9F5.png" alt="389857C5-75F4-4B27-913C-39D93D39C9F5"></p>
 
           
         
@@ -1030,8 +1030,8 @@
 <p>（面试题）用关联对象实现的为分类添加的“成员变量”储存到哪？</p>
 <p>​    都放在AssocationsManager里面的AssociationHashMap存储。并且所有的关联内容无论是为哪个分类创建的对象都会放在同一个全局容器里面。    </p>
 </blockquote>
-<p><img src="/2019/01/31/objective-c/关联对象（Associations）/img/1B3B51E3-593E-4351-9029-F31841E8BAFC.png" alt="1B3B51E3-593E-4351-9029-F31841E8BAFC"></p>
-<p><img src="/2019/01/31/objective-c/关联对象（Associations）/img/867F84EF-F895-4625-B29C-18786B329B09.png" alt="867F84EF-F895-4625-B29C-18786B329B09"></p>
+<p><img src="/2019/01/31/objective-c/关联对象（Associations）/1B3B51E3-593E-4351-9029-F31841E8BAFC.png" alt="1B3B51E3-593E-4351-9029-F31841E8BAFC"></p>
+<p><img src="/2019/01/31/objective-c/关联对象（Associations）/867F84EF-F895-4625-B29C-18786B329B09.png" alt="867F84EF-F895-4625-B29C-18786B329B09"></p>
 <h1 id="关联策略"><a href="#关联策略" class="headerlink" title="关联策略"></a>关联策略</h1><table>
 <thead>
 <tr>
@@ -1075,173 +1075,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">objc_setAssociatedObject(self, @selector(function), name,  OBJC_ASSOCIATION_RETAIN_NONATOMIC);</span><br><span class="line">// 或者</span><br><span class="line">objc_setAssociatedObject(self, _cmd, name,  OBJC_ASSOCIATION_RETAIN_NONATOMIC);</span><br><span class="line">// _cmd的作用域只在当前方法里，直指当前方法名@selector。</span><br></pre></td></tr></table></figure>
 <h1 id="DEMO"><a href="#DEMO" class="headerlink" title="DEMO"></a>DEMO</h1><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UIButton+Block.h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">void</span> (^btnBlock)(<span class="keyword">id</span> sender);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">UIButton</span> (<span class="title">Block</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)handelWithBlock:(btnBlock)block;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UIButton+Block.m</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#import <span class="meta-string">"UIButton+Block.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)handelWithBlock:(btnBlock)block &#123;</span><br><span class="line">    <span class="keyword">if</span> (block) &#123;</span><br><span class="line">        <span class="comment">// @selector(btnAction:)</span></span><br><span class="line">        objc_setAssociatedObject(<span class="keyword">self</span>, <span class="keyword">@selector</span>(btnAction:), block,  OBJC_ASSOCIATION_RETAIN_NONATOMIC);</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="keyword">self</span> addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(btnAction:) forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)btnAction:(<span class="keyword">id</span>)sender &#123;</span><br><span class="line">    btnBlock block = objc_getAssociatedObject(<span class="keyword">self</span>, <span class="keyword">@selector</span>(btnAction:));</span><br><span class="line">    <span class="keyword">if</span> (block) &#123;</span><br><span class="line">        block(sender);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/分类（Category）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ifunnyy">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/31/objective-c/分类（Category）/" itemprop="url">分类（Category）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T13:46:00+08:00">
-                2019-01-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/objective-c/" itemprop="url" rel="index">
-                    <span itemprop="name">objective-c</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="分类做了那些事"><a href="#分类做了那些事" class="headerlink" title="分类做了那些事"></a>分类做了那些事</h1><ul>
-<li>声明私有方法</li>
-<li>分解体积庞大的类文件</li>
-<li>把framework的私有方法公开</li>
-</ul>
-<h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><ul>
-<li>运行时决议，通过runtime添加</li>
-<li>可以为系统类添加分类</li>
-</ul>
-<h1 id="分类中都可以添加那些内容"><a href="#分类中都可以添加那些内容" class="headerlink" title="分类中都可以添加那些内容"></a>分类中都可以添加那些内容</h1><ul>
-<li>实例方法</li>
-<li>类方法</li>
-<li>协议</li>
-<li>属性（<strong>在分类中定义属性，实际上只是声明对应的get方法和set方法，并没有为我们在类中添加示实例变量</strong>）</li>
-<li>成员变量（<strong>使用关联对象技术</strong>）</li>
-</ul>
-<blockquote>
-<p>（面试题）分类有多个的情况下，各个分类都有一个同名的实例方法，最终哪个会失效</p>
-<p>​    最后编译的分类当中的方法会生效</p>
-</blockquote>
-<h1 id="分类源码结构"><a href="#分类源码结构" class="headerlink" title="分类源码结构"></a>分类源码结构</h1><p><img src="/2019/01/31/objective-c/分类（Category）/img/70449FE0-FA1D-4368-A671-3FCF141095FE.png" alt="70449FE0-FA1D-4368-A671-3FCF141095FE"></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li>分类添加的方法可以“覆盖”原类方法</li>
-<li>同名分类方法谁能生效取决于编译顺序</li>
-<li>名字相同的分类会引起编译报错</li>
-</ul>
 
           
         
@@ -1441,7 +1274,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/通知（NSNotification）/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/分类（Category）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -1460,7 +1293,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/31/objective-c/通知（NSNotification）/" itemprop="url">通知（NSNotification）</a></h1>
+                <a class="post-title-link" href="/2019/01/31/objective-c/分类（Category）/" itemprop="url">分类（Category）</a></h1>
         
 
         <div class="post-meta">
@@ -1534,12 +1367,32 @@
       
         
           
-            <h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><ul>
-<li>使用<font color="red">观察者模式</font>来实现的，用于跨层传递消息的机制。</li>
-<li>传递方式为<font color="red">一对多</font>。</li>
+            <h1 id="分类做了那些事"><a href="#分类做了那些事" class="headerlink" title="分类做了那些事"></a>分类做了那些事</h1><ul>
+<li>声明私有方法</li>
+<li>分解体积庞大的类文件</li>
+<li>把framework的私有方法公开</li>
 </ul>
-<p><img src="/2019/01/31/objective-c/通知（NSNotification）/8C73605E-A19B-4803-8D9A-1554FA19C1C8.png" alt="8C73605E-A19B-4803-8D9A-1554FA19C1C8"></p>
-<h1 id="如何实现通知机制"><a href="#如何实现通知机制" class="headerlink" title="如何实现通知机制"></a>如何实现通知机制</h1><p>NSNotificaitioncenter内部应该是服务一个Map表或者字典，key是notificationName，value是一个数组列表Observers_list，Observers_list里面每个成员应该包含注册通知的观察者，其次还得包含关于观察者调用的方法。</p>
+<h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><ul>
+<li>运行时决议，通过runtime添加</li>
+<li>可以为系统类添加分类</li>
+</ul>
+<h1 id="分类中都可以添加那些内容"><a href="#分类中都可以添加那些内容" class="headerlink" title="分类中都可以添加那些内容"></a>分类中都可以添加那些内容</h1><ul>
+<li>实例方法</li>
+<li>类方法</li>
+<li>协议</li>
+<li>属性（<strong>在分类中定义属性，实际上只是声明对应的get方法和set方法，并没有为我们在类中添加示实例变量</strong>）</li>
+<li>成员变量（<strong>使用关联对象技术</strong>）</li>
+</ul>
+<blockquote>
+<p>（面试题）分类有多个的情况下，各个分类都有一个同名的实例方法，最终哪个会失效</p>
+<p>​    最后编译的分类当中的方法会生效</p>
+</blockquote>
+<h1 id="分类源码结构"><a href="#分类源码结构" class="headerlink" title="分类源码结构"></a>分类源码结构</h1><p><img src="/2019/01/31/objective-c/分类（Category）/70449FE0-FA1D-4368-A671-3FCF141095FE.png" alt="70449FE0-FA1D-4368-A671-3FCF141095FE"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>分类添加的方法可以“覆盖”原类方法</li>
+<li>同名分类方法谁能生效取决于编译顺序</li>
+<li>名字相同的分类会引起编译报错</li>
+</ul>
 
           
         
@@ -1769,13 +1622,13 @@
 <li>浅拷贝会增加被拷贝对象的引用计数</li>
 <li>不要产生新的内存空间</li>
 </ul>
-<p><img src="/2019/01/31/objective-c/属性关键字/img/C4F93F38-0319-4BC7-842B-0D652B8DE8AD.png" alt="C4F93F38-0319-4BC7-842B-0D652B8DE8AD"></p>
+<p><img src="/2019/01/31/objective-c/属性关键字/C4F93F38-0319-4BC7-842B-0D652B8DE8AD.png" alt="C4F93F38-0319-4BC7-842B-0D652B8DE8AD"></p>
 <h2 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h2><p>深拷贝让目标对象指针和源对象指针指向<font color="red">两片</font>内容相同的内存空间。</p>
 <ul>
 <li>深拷贝不会增加被拷贝对象的引用计数</li>
 <li>深拷贝产生了一个内存分配，出现了两块内存。</li>
 </ul>
-<p><img src="/2019/01/31/objective-c/属性关键字/img/68925F58-C0AF-4B94-B79E-7EC733105A06.png" alt="68925F58-C0AF-4B94-B79E-7EC733105A06"></p>
+<p><img src="/2019/01/31/objective-c/属性关键字/68925F58-C0AF-4B94-B79E-7EC733105A06.png" alt="68925F58-C0AF-4B94-B79E-7EC733105A06"></p>
 <blockquote>
 <p>（面试题）说出深拷贝和浅拷贝的不同</p>
 <p>​    是否开辟了新的内存空间，深拷贝会，浅拷贝不会。</p>
@@ -1788,6 +1641,153 @@
 <p>​    如果赋值过来的是NSArray，copy之后是NSArray。        </p>
 </blockquote>
 <p>​    </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/通知（NSNotification）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ifunnyy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/31/objective-c/通知（NSNotification）/" itemprop="url">通知（NSNotification）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T13:46:00+08:00">
+                2019-01-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/objective-c/" itemprop="url" rel="index">
+                    <span itemprop="name">objective-c</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><ul>
+<li>使用<font color="red">观察者模式</font>来实现的，用于跨层传递消息的机制。</li>
+<li>传递方式为<font color="red">一对多</font>。</li>
+</ul>
+<p><img src="/2019/01/31/objective-c/通知（NSNotification）/8C73605E-A19B-4803-8D9A-1554FA19C1C8.png" alt="8C73605E-A19B-4803-8D9A-1554FA19C1C8"></p>
+<h1 id="如何实现通知机制"><a href="#如何实现通知机制" class="headerlink" title="如何实现通知机制"></a>如何实现通知机制</h1><p>NSNotificaitioncenter内部应该是服务一个Map表或者字典，key是notificationName，value是一个数组列表Observers_list，Observers_list里面每个成员应该包含注册通知的观察者，其次还得包含关于观察者调用的方法。</p>
 
           
         
