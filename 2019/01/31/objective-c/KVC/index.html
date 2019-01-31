@@ -79,17 +79,20 @@
 
 
 
-<meta name="description" content="批量替换脚本：https://github.com/ifunnyy/ipa-batch-signature-again ipa 重签的操作主要分为以下几步：  先将ipa包进行解压 删除Payload/xxx.app/_CodeSignature里面的文件 替换embedded.mobileprovision 生成entitlements.plist 进行重新签名 重新打包  假设证书和ipa包都">
+<meta name="description" content="描述KVC是Key-value coding的缩写。 123- (id)valueForKey:(NSString *)key;- (void)setValue:(id)value forKey:(NSString *)key; valueForKey实现逻辑  系统会判断通过这个key访问的实例变量是否有相应的get方法，有则调用并返回。 没有则会判断实例变量是否存在，存在则获取值并返回。 不存">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ipa 重新签名">
-<meta property="og:url" content="http://yoursite.com/2018/08/16/ios/ipa重签/index.html">
+<meta property="og:title" content="KVC">
+<meta property="og:url" content="http://yoursite.com/2019/01/31/objective-c/KVC/index.html">
 <meta property="og:site_name" content="ifunnyy">
-<meta property="og:description" content="批量替换脚本：https://github.com/ifunnyy/ipa-batch-signature-again ipa 重签的操作主要分为以下几步：  先将ipa包进行解压 删除Payload/xxx.app/_CodeSignature里面的文件 替换embedded.mobileprovision 生成entitlements.plist 进行重新签名 重新打包  假设证书和ipa包都">
+<meta property="og:description" content="描述KVC是Key-value coding的缩写。 123- (id)valueForKey:(NSString *)key;- (void)setValue:(id)value forKey:(NSString *)key; valueForKey实现逻辑  系统会判断通过这个key访问的实例变量是否有相应的get方法，有则调用并返回。 没有则会判断实例变量是否存在，存在则获取值并返回。 不存">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-16T08:57:04.998Z">
+<meta property="og:image" content="http://yoursite.com/2019/01/31/objective-c/KVC/img/DA2C8749-9361-42F9-91A0-4CFE33CF234B.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/31/objective-c/KVC/img/389857C5-75F4-4B27-913C-39D93D39C9F5.png">
+<meta property="og:updated_time" content="2019-01-31T09:34:40.619Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ipa 重新签名">
-<meta name="twitter:description" content="批量替换脚本：https://github.com/ifunnyy/ipa-batch-signature-again ipa 重签的操作主要分为以下几步：  先将ipa包进行解压 删除Payload/xxx.app/_CodeSignature里面的文件 替换embedded.mobileprovision 生成entitlements.plist 进行重新签名 重新打包  假设证书和ipa包都">
+<meta name="twitter:title" content="KVC">
+<meta name="twitter:description" content="描述KVC是Key-value coding的缩写。 123- (id)valueForKey:(NSString *)key;- (void)setValue:(id)value forKey:(NSString *)key; valueForKey实现逻辑  系统会判断通过这个key访问的实例变量是否有相应的get方法，有则调用并返回。 没有则会判断实例变量是否存在，存在则获取值并返回。 不存">
+<meta name="twitter:image" content="http://yoursite.com/2019/01/31/objective-c/KVC/img/DA2C8749-9361-42F9-91A0-4CFE33CF234B.png">
 
 
 
@@ -119,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/08/16/ios/ipa重签/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/01/31/objective-c/KVC/"/>
 
 
 
 
 
-  <title>ipa 重新签名 | ifunnyy</title>
+  <title>KVC | ifunnyy</title>
   
 
 
@@ -252,7 +255,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/16/ios/ipa重签/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/KVC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -269,7 +272,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ipa 重新签名</h1>
+          <h1 class="post-title" itemprop="name headline">KVC</h1>
         
 
         <div class="post-meta">
@@ -281,8 +284,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-16T16:56:00+08:00">
-                2018-08-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T13:46:00+08:00">
+                2019-01-31
               </time>
             
 
@@ -304,8 +307,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
+                  <a href="/categories/objective-c/" itemprop="url" rel="index">
+                    <span itemprop="name">objective-c</span>
                   </a>
                 </span>
 
@@ -346,23 +349,31 @@
       
 
       
-        <p>批量替换脚本：<a href="https://github.com/ifunnyy/ipa-batch-signature-again" target="_blank" rel="noopener">https://github.com/ifunnyy/ipa-batch-signature-again</a></p>
-<p>ipa 重签的操作主要分为以下几步：</p>
+        <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>KVC是Key-value coding的缩写。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (id)valueForKey:(NSString *)key;</span><br><span class="line"></span><br><span class="line">- (void)setValue:(id)value forKey:(NSString *)key;</span><br></pre></td></tr></table></figure>
+<h1 id="valueForKey实现逻辑"><a href="#valueForKey实现逻辑" class="headerlink" title="valueForKey实现逻辑"></a>valueForKey实现逻辑</h1><p><img src="/2019/01/31/objective-c/KVC/img/DA2C8749-9361-42F9-91A0-4CFE33CF234B.png" alt="DA2C8749-9361-42F9-91A0-4CFE33CF234B"></p>
 <ol>
-<li>先将ipa包进行解压</li>
-<li>删除Payload/xxx.app/_CodeSignature里面的文件</li>
-<li>替换embedded.mobileprovision</li>
-<li>生成entitlements.plist</li>
-<li>进行重新签名</li>
-<li>重新打包</li>
+<li>系统会判断通过这个key访问的实例变量是否有相应的get方法，有则调用并返回。</li>
+<li>没有则会判断实例变量是否存在，存在则获取值并返回。</li>
+<li>不存在则会调用valueForUndefinedKey:方法并抛出NSUndefinedKeyException这个未定义key的异常。</li>
 </ol>
-<p>假设证书和ipa包都在同个目录下</p>
-<h1 id="先将ipa包进行解压"><a href="#先将ipa包进行解压" class="headerlink" title="先将ipa包进行解压"></a>先将ipa包进行解压</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip xxx.ipa</span><br></pre></td></tr></table></figure>
-<h1 id="删除Payload-xxx-app-CodeSignature里面的文件"><a href="#删除Payload-xxx-app-CodeSignature里面的文件" class="headerlink" title="删除Payload/xxx.app/_CodeSignature里面的文件"></a>删除Payload/xxx.app/_CodeSignature里面的文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -fr Payload/xxx.app/_CodeSignature/</span><br></pre></td></tr></table></figure>
-<h1 id="替换embedded-mobileprovision"><a href="#替换embedded-mobileprovision" class="headerlink" title="替换embedded.mobileprovision"></a>替换embedded.mobileprovision</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp embedded.mobileprovision Payload/xxx.app/embedded.mobileprovision</span><br></pre></td></tr></table></figure>
-<h1 id="生成entitlements-plist"><a href="#生成entitlements-plist" class="headerlink" title="生成entitlements.plist"></a>生成entitlements.plist</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">security cms -D -i embedded.mobileprovision &gt; entitlements_full.plist</span><br><span class="line"></span><br><span class="line">/usr/libexec/PlistBuddy -x -c &apos;Print:Entitlements&apos; entitlements_full.plist &gt; entitlements.plist</span><br></pre></td></tr></table></figure>
-<h1 id="进行重新签名"><a href="#进行重新签名" class="headerlink" title="进行重新签名"></a>进行重新签名</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/codesign -f -s &quot;证书名称&quot; --entitlements entitlements.plist Payload/xxx.app/</span><br></pre></td></tr></table></figure>
-<h1 id="重新打包"><a href="#重新打包" class="headerlink" title="重新打包"></a>重新打包</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip -r xxx.ipa Payload/</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>关于实例变量是否存在，系统提供了一个可屏蔽的开关+ (BOOL)accessInstanceVariablesDirctly，这个方法默认实现返回的是YES，也就是说与我们这个key相同或者相似的一个成员变量是存在的，那我们认为这个成员变量是存在的，如果我们重写这个方法返回NO，即使我们访问这个key同名的成员变量是存在的，那么我们也没有办法通过这个key去获取对应的值。</p>
+</blockquote>
+<h2 id="Accessor-Method-is-exist-（访问器方法是否存在）"><a href="#Accessor-Method-is-exist-（访问器方法是否存在）" class="headerlink" title="Accessor Method is exist （访问器方法是否存在）"></a>Accessor Method is exist （访问器方法是否存在）</h2><p>遵循key相同或者相似原则</p>
+<ul>
+<li><getkey>    get方法，满足驼峰命名</getkey></li>
+<li><key>        属性名称</key></li>
+<li><iskey>     对应的成员变量</iskey></li>
+</ul>
+<h2 id="Instance-var-（实例变量）"><a href="#Instance-var-（实例变量）" class="headerlink" title="Instance var （实例变量）"></a>Instance var （实例变量）</h2><p>同名的实例变量或者相似名称的成员变量</p>
+<ul>
+<li>_key</li>
+<li>_isKey</li>
+<li>key</li>
+<li>isKey</li>
+</ul>
+<h1 id="setValue-ForKey-实现逻辑"><a href="#setValue-ForKey-实现逻辑" class="headerlink" title="setValue:ForKey:实现逻辑"></a>setValue:ForKey:实现逻辑</h1><p><img src="/2019/01/31/objective-c/KVC/img/389857C5-75F4-4B27-913C-39D93D39C9F5.png" alt="389857C5-75F4-4B27-913C-39D93D39C9F5"></p>
 
       
     </div>
@@ -387,8 +398,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/14/javascript/语言篇/题目/" rel="next" title="题目">
-                <i class="fa fa-chevron-left"></i> 题目
+              <a href="/2019/01/31/objective-c/关联对象（Associations）/" rel="next" title="关联对象（Associations）">
+                <i class="fa fa-chevron-left"></i> 关联对象（Associations）
               </a>
             
           </div>
@@ -397,8 +408,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/01/31/ios/Runtime数据结构/" rel="prev" title="runtime数据结构">
-                runtime数据结构 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/01/31/objective-c/KVO/" rel="prev" title="KVO">
+                KVO <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -526,7 +537,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#先将ipa包进行解压"><span class="nav-number">1.</span> <span class="nav-text">先将ipa包进行解压</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除Payload-xxx-app-CodeSignature里面的文件"><span class="nav-number">2.</span> <span class="nav-text">删除Payload/xxx.app/_CodeSignature里面的文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#替换embedded-mobileprovision"><span class="nav-number">3.</span> <span class="nav-text">替换embedded.mobileprovision</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生成entitlements-plist"><span class="nav-number">4.</span> <span class="nav-text">生成entitlements.plist</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进行重新签名"><span class="nav-number">5.</span> <span class="nav-text">进行重新签名</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重新打包"><span class="nav-number">6.</span> <span class="nav-text">重新打包</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#描述"><span class="nav-number">1.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#valueForKey实现逻辑"><span class="nav-number">2.</span> <span class="nav-text">valueForKey实现逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Accessor-Method-is-exist-（访问器方法是否存在）"><span class="nav-number">2.1.</span> <span class="nav-text">Accessor Method is exist （访问器方法是否存在）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instance-var-（实例变量）"><span class="nav-number">2.2.</span> <span class="nav-text">Instance var （实例变量）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#setValue-ForKey-实现逻辑"><span class="nav-number">3.</span> <span class="nav-text">setValue:ForKey:实现逻辑</span></a></li></ol></div>
             
 
           </div>
