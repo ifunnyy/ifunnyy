@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="关联对象作用 使用关联对象可以给分类添加“成员变量”。 为现有的类添加私有变量以帮助实现细节。 为现有的类添加公有属性 为 KVO 创建一个关联的观察者  函数12345678// 通过指定的key去object对象中读取关联值id objc_getAssociatedObject(id object, const void *key);// 存入一个值，使这个值和key相映射，然后把这个映射关系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ifunnyy">
+<meta property="og:url" content="http://yoursite.com/2019/01/24/objective-c/关联对象（Associations）/index.html">
+<meta property="og:site_name" content="ifunnyy">
+<meta property="og:description" content="关联对象作用 使用关联对象可以给分类添加“成员变量”。 为现有的类添加私有变量以帮助实现细节。 为现有的类添加公有属性 为 KVO 创建一个关联的观察者  函数12345678// 通过指定的key去object对象中读取关联值id objc_getAssociatedObject(id object, const void *key);// 存入一个值，使这个值和key相映射，然后把这个映射关系">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/01/24/objective-c/关联对象（Associations）/1B3B51E3-593E-4351-9029-F31841E8BAFC.png">
+<meta property="og:image" content="http://yoursite.com/2019/01/24/objective-c/关联对象（Associations）/867F84EF-F895-4625-B29C-18786B329B09.png">
+<meta property="og:updated_time" content="2019-01-27T17:33:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ifunnyy">
+<meta name="twitter:description" content="关联对象作用 使用关联对象可以给分类添加“成员变量”。 为现有的类添加私有变量以帮助实现细节。 为现有的类添加公有属性 为 KVO 创建一个关联的观察者  函数12345678// 通过指定的key去object对象中读取关联值id objc_getAssociatedObject(id object, const void *key);// 存入一个值，使这个值和key相映射，然后把这个映射关系">
+<meta name="twitter:image" content="http://yoursite.com/2019/01/24/objective-c/关联对象（Associations）/1B3B51E3-593E-4351-9029-F31841E8BAFC.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: false,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/24/objective-c/关联对象（Associations）/"/>
+
+
+
+
+
+  <title> | ifunnyy</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?95e48dc1b0014483f90b963827cc265d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ifunnyy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/24/objective-c/关联对象（Associations）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ifunnyy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-24T22:44:23+08:00">
+                2019-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="关联对象作用"><a href="#关联对象作用" class="headerlink" title="关联对象作用"></a>关联对象作用</h1><ul>
+<li>使用关联对象可以给分类添加“成员变量”。</li>
+<li>为现有的类添加私有变量以帮助实现细节。</li>
+<li>为现有的类添加公有属性</li>
+<li>为 <code>KVO</code> 创建一个关联的观察者</li>
+</ul>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过指定的key去object对象中读取关联值</span></span><br><span class="line"><span class="keyword">id</span> objc_getAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 存入一个值，使这个值和key相映射，然后把这个映射关系通过policy关联到object对象上，传入nil则移除已有的关联对象</span></span><br><span class="line"><span class="keyword">void</span> objc_setAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key, <span class="keyword">id</span> value, objc_AssociationPolicy policy);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据指定对象去移除它所有的关联对象，慎用，因为这样会移除掉别人添加的关联对象</span></span><br><span class="line"><span class="keyword">void</span> objc_removeAssociatedObjects(<span class="keyword">id</span> object)</span><br></pre></td></tr></table></figure>
+<h1 id="关联对象的本质"><a href="#关联对象的本质" class="headerlink" title="关联对象的本质"></a>关联对象的本质</h1><p>关联对象由系统提供的<strong><font color="red">AssociationsManager</font></strong>管理并在<strong><font color="red">AssociationsHashMap</font></strong>存储。</p>
+<p>所有对象的关联内容都在<strong><font color="red">同一个全局容器</font></strong>中。</p>
+<blockquote>
+<p>（面试题）用关联对象实现的为分类添加的“成员变量”储存到哪？</p>
+<p>​    都放在AssocationsManager里面的AssociationHashMap存储。并且所有的关联内容无论是为哪个分类创建的对象都会放在同一个全局容器里面。    </p>
+</blockquote>
+<p><img src="/2019/01/24/objective-c/关联对象（Associations）/1B3B51E3-593E-4351-9029-F31841E8BAFC.png" alt="1B3B51E3-593E-4351-9029-F31841E8BAFC"></p>
+<p><img src="/2019/01/24/objective-c/关联对象（Associations）/867F84EF-F895-4625-B29C-18786B329B09.png" alt="867F84EF-F895-4625-B29C-18786B329B09"></p>
+<h1 id="关联策略"><a href="#关联策略" class="headerlink" title="关联策略"></a>关联策略</h1><table>
+<thead>
+<tr>
+<th>关联策略</th>
+<th>等价属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OBJC_ASSOCIATION_ASSIGN</td>
+<td>@property (assign) or @property (unsafe_unretained)</td>
+<td>弱引用关联对象</td>
+</tr>
+<tr>
+<td>OBJC_ASSOCIATION_RETAIN_NONATOMIC</td>
+<td>@property (strong, nonatomic)</td>
+<td>强引用关联对象，且为非原子操作</td>
+</tr>
+<tr>
+<td>OBJC_ASSOCIATION_COPY_NONATOMIC</td>
+<td>@property (copy, nonatomic)</td>
+<td>复制关联对象，且为非原子操作</td>
+</tr>
+<tr>
+<td>OBJC_ASSOCIATION_RETAIN</td>
+<td>@property (strong, atomic)</td>
+<td>强引用关联对象，且为原子操作</td>
+</tr>
+<tr>
+<td>OBJC_ASSOCIATION_COPY</td>
+<td>@property (copy, atomic)</td>
+<td>复制关联对象，且为原子操作</td>
+</tr>
+</tbody>
+</table>
+<h1 id="const-void-key"><a href="#const-void-key" class="headerlink" title="const void *key"></a>const void *key</h1><p><code>const void *key</code>类型通常都是通常都是会采用静态变量来作为关键字，可以自己创建，也可以使用<code>@selector(XXX)</code>。</p>
+<p>第一种</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">char</span> nameKey;</span><br><span class="line"></span><br><span class="line">objc_setAssociatedObject(<span class="keyword">self</span>, &amp;nameKey, name,  OBJC_ASSOCIATION_RETAIN_NONATOMIC);</span><br></pre></td></tr></table></figure>
+<p>第二种</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">objc_setAssociatedObject(self, @selector(function), name,  OBJC_ASSOCIATION_RETAIN_NONATOMIC);</span><br><span class="line">// 或者</span><br><span class="line">objc_setAssociatedObject(self, _cmd, name,  OBJC_ASSOCIATION_RETAIN_NONATOMIC);</span><br><span class="line">// _cmd的作用域只在当前方法里，直指当前方法名@selector。</span><br></pre></td></tr></table></figure>
+<h1 id="DEMO"><a href="#DEMO" class="headerlink" title="DEMO"></a>DEMO</h1><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UIButton+Block.h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">void</span> (^btnBlock)(<span class="keyword">id</span> sender);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">UIButton</span> (<span class="title">Block</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)handelWithBlock:(btnBlock)block;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UIButton+Block.m</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#import <span class="meta-string">"UIButton+Block.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)handelWithBlock:(btnBlock)block &#123;</span><br><span class="line">    <span class="keyword">if</span> (block) &#123;</span><br><span class="line">        <span class="comment">// @selector(btnAction:)</span></span><br><span class="line">        objc_setAssociatedObject(<span class="keyword">self</span>, <span class="keyword">@selector</span>(btnAction:), block,  OBJC_ASSOCIATION_RETAIN_NONATOMIC);</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="keyword">self</span> addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(btnAction:) forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)btnAction:(<span class="keyword">id</span>)sender &#123;</span><br><span class="line">    btnBlock block = objc_getAssociatedObject(<span class="keyword">self</span>, <span class="keyword">@selector</span>(btnAction:));</span><br><span class="line">    <span class="keyword">if</span> (block) &#123;</span><br><span class="line">        block(sender);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/24/objective-c/分类（Category）/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/28/objective-c/扩展（Extension）/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Johnny" />
+            
+              <p class="site-author-name" itemprop="name">Johnny</p>
+              <p class="site-description motion-element" itemprop="description">仰天大笑出门去 我辈岂是蓬蒿人</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关联对象作用"><span class="nav-number">1.</span> <span class="nav-text">关联对象作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数"><span class="nav-number">2.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关联对象的本质"><span class="nav-number">3.</span> <span class="nav-text">关联对象的本质</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关联策略"><span class="nav-number">4.</span> <span class="nav-text">关联策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#const-void-key"><span class="nav-number">5.</span> <span class="nav-text">const void *key</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DEMO"><span class="nav-number">6.</span> <span class="nav-text">DEMO</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"> ifunnyy | Johnny</span>
+
+  
+</div>
+
+
+  <div class="powered-by"> _(:з」∠)_</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">博客 &mdash;  v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

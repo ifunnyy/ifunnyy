@@ -560,7 +560,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/16/ios/ipa重签/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/29/objective-c/属性关键字/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -579,7 +579,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/16/ios/ipa重签/" itemprop="url">ipa 重新签名</a></h1>
+                <a class="post-title-link" href="/2019/01/29/objective-c/属性关键字/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -591,8 +591,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-16T16:56:00+08:00">
-                2018-08-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-29T09:58:00+08:00">
+                2019-01-29
               </time>
             
 
@@ -601,28 +601,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -653,23 +631,257 @@
       
         
           
-            <p>批量替换脚本：<a href="https://github.com/ifunnyy/ipa-batch-signature-again" target="_blank" rel="noopener">https://github.com/ifunnyy/ipa-batch-signature-again</a></p>
-<p>ipa 重签的操作主要分为以下几步：</p>
+            <h1 id="属性关键字分为哪几类"><a href="#属性关键字分为哪几类" class="headerlink" title="属性关键字分为哪几类"></a>属性关键字分为哪几类</h1><ul>
+<li>读写权限<ul>
+<li>readonly</li>
+<li>readwrite (默认)</li>
+</ul>
+</li>
+<li>原子性<ul>
+<li>atomic (默认)</li>
+<li>nonatomic</li>
+</ul>
+</li>
+<li>引用计数<ul>
+<li>retain/strong (默认)<ul>
+<li>retain一般在MRC中使用，strong一般在ARC中使用</li>
+<li>都是用来修饰对象</li>
+</ul>
+</li>
+<li>assign/unsafe_unretained<ul>
+<li>assign: 修饰基本数据类型，如int，BOOL等。</li>
+<li>assign: 修饰对象类型时，不改变其引用计数。</li>
+<li>assign所修饰的对象，在被释放之后，assign指针仍指向原地址，这个时候如果通过assign指针继续访问原对象，会产生悬垂指针导致内存泄漏，程序异常。</li>
+<li>unsafe_unretained在MRC中使用较多，ARC基本不用</li>
+</ul>
+</li>
+<li>weak<ul>
+<li>不改变被修饰对象的引用计数。</li>
+<li>所指对象在被释放之后会自动置为nil。</li>
+</ul>
+</li>
+<li>copy</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>（面试题）被atomic修饰的属性有什么意义？</p>
+<p>​    保证赋值和获取是线程安全的（这里的赋值和获取是对成员属性直接赋值和获取，并不包括操作访问），比如被atomic修饰的数组，对它进行赋值和获取是可以保证线程安全，但是对这个数组做操作，比如增加和移除对象，这样就不能保证线程安全。</p>
+</blockquote>
+<blockquote>
+<p>（面试题）assign和weak他们之间的区别有哪些</p>
+<p>​    一、weak可以修饰对象，而assign既可以修饰对象，也可以修饰基本数据类型。    </p>
+<p>​    二、assign所修饰的对象被释放后，assign指针仍指向原来的内存地址，而weak所修饰的对象被释放后，会自动设置为nil。</p>
+</blockquote>
+<h2 id="copy关键字要点"><a href="#copy关键字要点" class="headerlink" title="copy关键字要点"></a>copy关键字要点</h2><table>
+<thead>
+<tr>
+<th>源对象类型</th>
+<th>拷贝方式</th>
+<th>目标对象类型</th>
+<th>拷贝类型（深/浅）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mutable对象</td>
+<td>copy</td>
+<td>不可变</td>
+<td>深拷贝</td>
+</tr>
+<tr>
+<td>mutable对象</td>
+<td>mutableCopy</td>
+<td>可变</td>
+<td>深拷贝</td>
+</tr>
+<tr>
+<td>immutable对象</td>
+<td>copy</td>
+<td>不可变</td>
+<td>浅拷贝</td>
+</tr>
+<tr>
+<td>immutable对象</td>
+<td>mutableCopy</td>
+<td>可变</td>
+<td>深拷贝</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>可变对象的copy和mutableCopy都是深拷贝</li>
+<li>不可变对象的copy是浅拷贝，mutableCopy是深拷贝</li>
+<li>copy方法返回的都是不可变对象</li>
+</ul>
+<h2 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h2><p>浅拷贝就是对内存地址的复制，让目标对象指针的源对象指向<font color="red">同一片</font>内存空间。</p>
+<ul>
+<li>浅拷贝会增加被拷贝对象的引用计数</li>
+<li>不要产生新的内存空间</li>
+</ul>
+<p><img src="/2019/01/29/objective-c/属性关键字/C4F93F38-0319-4BC7-842B-0D652B8DE8AD.png" alt="C4F93F38-0319-4BC7-842B-0D652B8DE8AD"></p>
+<h2 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h2><p>深拷贝让目标对象指针和源对象指针指向<font color="red">两片</font>内容相同的内存空间。</p>
+<ul>
+<li>深拷贝不会增加被拷贝对象的引用计数</li>
+<li>深拷贝产生了一个内存分配，出现了两块内存。</li>
+</ul>
+<p><img src="/2019/01/29/objective-c/属性关键字/68925F58-C0AF-4B94-B79E-7EC733105A06.png" alt="68925F58-C0AF-4B94-B79E-7EC733105A06"></p>
+<blockquote>
+<p>（面试题）说出深拷贝和浅拷贝的不同</p>
+<p>​    是否开辟了新的内存空间，深拷贝会，浅拷贝不会。</p>
+<p>​    是否影响引用计数，深拷贝不会，浅拷贝会。</p>
+</blockquote>
+<blockquote>
+<p>（面试题）@property(copy)NSMutableArray* array，这样声明会产生什么问题？</p>
+<p>​    会导致程序异常。</p>
+<p>​    如果赋值过来的是NSMutableArray，copy之后是NSArray。</p>
+<p>​    如果赋值过来的是NSArray，copy之后是NSArray。        </p>
+</blockquote>
+<p>​    </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/28/objective-c/KVC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ifunnyy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/28/objective-c/KVC/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-28T23:51:15+08:00">
+                2019-01-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>KVC是Key-value coding的缩写。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (id)valueForKey:(NSString *)key;</span><br><span class="line"></span><br><span class="line">- (void)setValue:(id)value forKey:(NSString *)key;</span><br></pre></td></tr></table></figure>
+<h1 id="valueForKey实现逻辑"><a href="#valueForKey实现逻辑" class="headerlink" title="valueForKey实现逻辑"></a>valueForKey实现逻辑</h1><p><img src="/2019/01/28/objective-c/KVC/DA2C8749-9361-42F9-91A0-4CFE33CF234B.png" alt="DA2C8749-9361-42F9-91A0-4CFE33CF234B"></p>
 <ol>
-<li>先将ipa包进行解压</li>
-<li>删除Payload/xxx.app/_CodeSignature里面的文件</li>
-<li>替换embedded.mobileprovision</li>
-<li>生成entitlements.plist</li>
-<li>进行重新签名</li>
-<li>重新打包</li>
+<li>系统会判断通过这个key访问的实例变量是否有相应的get方法，有则调用并返回。</li>
+<li>没有则会判断实例变量是否存在，存在则获取值并返回。</li>
+<li>不存在则会调用valueForUndefinedKey:方法并抛出NSUndefinedKeyException这个未定义key的异常。</li>
 </ol>
-<p>假设证书和ipa包都在同个目录下</p>
-<h1 id="先将ipa包进行解压"><a href="#先将ipa包进行解压" class="headerlink" title="先将ipa包进行解压"></a>先将ipa包进行解压</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip xxx.ipa</span><br></pre></td></tr></table></figure>
-<h1 id="删除Payload-xxx-app-CodeSignature里面的文件"><a href="#删除Payload-xxx-app-CodeSignature里面的文件" class="headerlink" title="删除Payload/xxx.app/_CodeSignature里面的文件"></a>删除Payload/xxx.app/_CodeSignature里面的文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -fr Payload/xxx.app/_CodeSignature/</span><br></pre></td></tr></table></figure>
-<h1 id="替换embedded-mobileprovision"><a href="#替换embedded-mobileprovision" class="headerlink" title="替换embedded.mobileprovision"></a>替换embedded.mobileprovision</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp embedded.mobileprovision Payload/xxx.app/embedded.mobileprovision</span><br></pre></td></tr></table></figure>
-<h1 id="生成entitlements-plist"><a href="#生成entitlements-plist" class="headerlink" title="生成entitlements.plist"></a>生成entitlements.plist</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">security cms -D -i embedded.mobileprovision &gt; entitlements_full.plist</span><br><span class="line"></span><br><span class="line">/usr/libexec/PlistBuddy -x -c &apos;Print:Entitlements&apos; entitlements_full.plist &gt; entitlements.plist</span><br></pre></td></tr></table></figure>
-<h1 id="进行重新签名"><a href="#进行重新签名" class="headerlink" title="进行重新签名"></a>进行重新签名</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/codesign -f -s &quot;证书名称&quot; --entitlements entitlements.plist Payload/xxx.app/</span><br></pre></td></tr></table></figure>
-<h1 id="重新打包"><a href="#重新打包" class="headerlink" title="重新打包"></a>重新打包</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zip -r xxx.ipa Payload/</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>关于实例变量是否存在，系统提供了一个可屏蔽的开关+ (BOOL)accessInstanceVariablesDirctly，这个方法默认实现返回的是YES，也就是说与我们这个key相同或者相似的一个成员变量是存在的，那我们认为这个成员变量是存在的，如果我们重写这个方法返回NO，即使我们访问这个key同名的成员变量是存在的，那么我们也没有办法通过这个key去获取对应的值。</p>
+</blockquote>
+<h2 id="Accessor-Method-is-exist-（访问器方法是否存在）"><a href="#Accessor-Method-is-exist-（访问器方法是否存在）" class="headerlink" title="Accessor Method is exist （访问器方法是否存在）"></a>Accessor Method is exist （访问器方法是否存在）</h2><p>遵循key相同或者相似原则</p>
+<ul>
+<li><getkey>    get方法，满足驼峰命名</getkey></li>
+<li><key>        属性名称</key></li>
+<li><iskey>     对应的成员变量</iskey></li>
+</ul>
+<h2 id="Instance-var-（实例变量）"><a href="#Instance-var-（实例变量）" class="headerlink" title="Instance var （实例变量）"></a>Instance var （实例变量）</h2><p>同名的实例变量或者相似名称的成员变量</p>
+<ul>
+<li>_key</li>
+<li>_isKey</li>
+<li>key</li>
+<li>isKey</li>
+</ul>
+<h1 id="setValue-ForKey-实现逻辑"><a href="#setValue-ForKey-实现逻辑" class="headerlink" title="setValue:ForKey:实现逻辑"></a>setValue:ForKey:实现逻辑</h1><p><img src="/2019/01/28/objective-c/KVC/389857C5-75F4-4B27-913C-39D93D39C9F5.png" alt="389857C5-75F4-4B27-913C-39D93D39C9F5"></p>
 
           
         
@@ -718,7 +930,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/14/javascript/语言篇/题目/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/28/objective-c/KVO/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -737,7 +949,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/14/javascript/语言篇/题目/" itemprop="url">题目</a></h1>
+                <a class="post-title-link" href="/2019/01/28/objective-c/KVO/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -749,8 +961,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T17:16:00+08:00">
-                2018-08-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-28T21:36:22+08:00">
+                2019-01-28
               </time>
             
 
@@ -759,28 +971,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/javascript随记/" itemprop="url" rel="index">
-                    <span itemprop="name">javascript随记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -811,382 +1001,62 @@
       
         
           
-            <h1 id="1、JavaScript的call和apply方法是做什么的，两者有什么区别？"><a href="#1、JavaScript的call和apply方法是做什么的，两者有什么区别？" class="headerlink" title="1、JavaScript的call和apply方法是做什么的，两者有什么区别？"></a>1、JavaScript的call和apply方法是做什么的，两者有什么区别？</h1><p>改变this指向。两者后面的参数不一样，call需要把实参按照形参那样传进去，而apply则需要传进去一个arguments。</p>
-<h1 id="2、下面这道题输出什么？为什么这样输出？怎么修改成正确的？"><a href="#2、下面这道题输出什么？为什么这样输出？怎么修改成正确的？" class="headerlink" title="2、下面这道题输出什么？为什么这样输出？怎么修改成正确的？"></a>2、下面这道题输出什么？为什么这样输出？怎么修改成正确的？</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function test() &#123;</span><br><span class="line">    var arr = [];</span><br><span class="line">    for (var i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">        arr[i] = function () &#123;</span><br><span class="line">            document.write(i + &apos; &apos;)</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    return arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var arr = test();</span><br><span class="line">for (var i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">    arr[i]();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">10 10 10 10 10 10 10 10 10 10</span><br></pre></td></tr></table></figure>
-<p>这个错误是因为数组里面存进去的function里面的i是函数在下面被执行的时候才知道的，那时候的i已经都是10了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">function test() &#123;</span><br><span class="line">    var arr = [];</span><br><span class="line">    for (var i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">        (function(j) &#123;</span><br><span class="line">	        arr[j] = function () &#123;</span><br><span class="line">            document.write(j + &apos;&lt;br /&gt;&apos;)</span><br><span class="line">	        &#125;;</span><br><span class="line">        &#125;(i))</span><br><span class="line">    &#125;</span><br><span class="line">    return arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var arr = test();</span><br><span class="line">for (var i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">    arr[i]();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">解析：</span><br><span class="line">arr[0]();</span><br><span class="line">立即执行函数的AO: j = 0</span><br><span class="line">testAO: arr = [f,...,f], i = 10</span><br><span class="line">arr[j] = function() &#123;</span><br><span class="line">	document.write(j + &apos; &apos;);</span><br><span class="line">&#125;</span><br><span class="line">里面的j是立即执行函数AO里面的j</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">0 1 2 3 4 5 6 7 8 9</span><br></pre></td></tr></table></figure>
-<h1 id="3、下面这道题输出什么？"><a href="#3、下面这道题输出什么？" class="headerlink" title="3、下面这道题输出什么？"></a>3、下面这道题输出什么？</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var f = (</span><br><span class="line">	function f() &#123;</span><br><span class="line">		return &apos;1&apos;;</span><br><span class="line">	&#125;,</span><br><span class="line">	function g() &#123;</span><br><span class="line">		return 2;</span><br><span class="line">	&#125;</span><br><span class="line">)();</span><br><span class="line">console.log(typeof f);</span><br></pre></td></tr></table></figure>
-<p>因为里面按顺序执行，最后执行完g()后把2赋值给f。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">number</span><br></pre></td></tr></table></figure>
-<h1 id="4、下面这道题输出什么？"><a href="#4、下面这道题输出什么？" class="headerlink" title="4、下面这道题输出什么？"></a>4、下面这道题输出什么？</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function foo() &#123;</span><br><span class="line">	bar.apply(null, arguments);</span><br><span class="line">&#125;</span><br><span class="line">function bar() &#123;</span><br><span class="line">	console.log(arguments);</span><br><span class="line">&#125;</span><br><span class="line">foo(1, 2, 3, 4, 5);</span><br></pre></td></tr></table></figure>
-<p>bar.apply(null, arguments);<br>相当于 bar(arguments);</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">[1, 2, 3, 4, 5]</span><br></pre></td></tr></table></figure>
-<h1 id="5、下面这道题输出什么？"><a href="#5、下面这道题输出什么？" class="headerlink" title="5、下面这道题输出什么？"></a>5、下面这道题输出什么？</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function foo() &#123;</span><br><span class="line">	console.log(arguments);</span><br><span class="line">&#125;(1, 2, 3, 4, 5);</span><br></pre></td></tr></table></figure>
-<p>这道题不输出，但是也不报错，因为系统会做这样的转换。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function foo() &#123;</span><br><span class="line">	console.log(arguments);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(1, 2, 3, 4, 5);</span><br></pre></td></tr></table></figure>
-<h1 id="6、下面这道题输出什么？"><a href="#6、下面这道题输出什么？" class="headerlink" title="6、下面这道题输出什么？"></a>6、下面这道题输出什么？</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function b(x, y, a) &#123;</span><br><span class="line">	arguments[2] = 10;</span><br><span class="line">	console.log(a);</span><br><span class="line">&#125;</span><br><span class="line">b(1, 2, 3);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">10</span><br></pre></td></tr></table></figure>
-<p>如果函数体改成下面，结果又会是什么？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = 10;</span><br><span class="line">console.log(arguments[2]);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">10</span><br></pre></td></tr></table></figure>
-<p>因为实参和形参是对应关系，但不是同一个值</p>
-<h1 id="7、下面这道题输出什么"><a href="#7、下面这道题输出什么" class="headerlink" title="7、下面这道题输出什么"></a>7、下面这道题输出什么</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var x = 1;</span><br><span class="line">if (function f() &#123;&#125;) &#123;</span><br><span class="line">	x += typeof(f);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(x);</span><br></pre></td></tr></table></figure>
-<p>if里面的functionf(){}被转换成表达式，而且不返回false，x+=typeof(f)为数字和字符串相加，自动转成字符串，但是f因为被转成表达式了，所以f现在是undefined。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">1undefined</span><br></pre></td></tr></table></figure>
-<h1 id="8、下面表达式的结果是什么？"><a href="#8、下面表达式的结果是什么？" class="headerlink" title="8、下面表达式的结果是什么？"></a>8、下面表达式的结果是什么？</h1><p>undefined == null</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">true</span><br><span class="line"></span><br><span class="line">比较相等性之前，不能将 null 和 undefined 转换成其他任何值，但要记住 null == undefined 会返回 true。</span><br></pre></td></tr></table></figure>
-<p>undefined === null</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">false</span><br><span class="line"></span><br><span class="line">类型不一样</span><br></pre></td></tr></table></figure>
-<p>isNaN(‘100’)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">false</span><br><span class="line"></span><br><span class="line">isNaN()可以理解为以下函数:</span><br><span class="line">function isNaN(num) &#123;</span><br><span class="line">	var ret = Number(num);</span><br><span class="line">	ret += &apos;&apos;;</span><br><span class="line">	if (ret == &apos;NaN&apos;) &#123;</span><br><span class="line">		return true;</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		return false;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>parseInt(‘1a’) == 1</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">true</span><br></pre></td></tr></table></figure>
-<h1 id="9、请输出下面的结果"><a href="#9、请输出下面的结果" class="headerlink" title="9、请输出下面的结果"></a>9、请输出下面的结果</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">var name = &apos;222&apos;;</span><br><span class="line">var a = &#123;</span><br><span class="line">	name: &apos;111&apos;,</span><br><span class="line">	say: function() &#123;</span><br><span class="line">		console.log(this.name);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var func = a.say;</span><br><span class="line">func();               //全局执行</span><br><span class="line">a.say();              //a执行say</span><br><span class="line"></span><br><span class="line">var b = &#123;</span><br><span class="line">	name: &apos;333&apos;,</span><br><span class="line">	say: function(func) &#123;</span><br><span class="line">		func()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">b.say(a.say);         //全局执行，b执行say()，但是say里面的func没有调用者</span><br><span class="line">b.say = a.say;</span><br><span class="line">b.say();              //因为把b的say替换成a的say，所以是b执行a的say方法</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">222</span><br><span class="line">111</span><br><span class="line">222</span><br><span class="line">333</span><br></pre></td></tr></table></figure>
-<h1 id="10、运行test-和new-test-的结果分别是什么"><a href="#10、运行test-和new-test-的结果分别是什么" class="headerlink" title="10、运行test()和new test()的结果分别是什么?"></a>10、运行test()和new test()的结果分别是什么?</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var a = 5;</span><br><span class="line">function test() &#123;</span><br><span class="line">	a = 0;</span><br><span class="line">	console.log(a);</span><br><span class="line">	console.log(this.a);</span><br><span class="line">	</span><br><span class="line">	var a;</span><br><span class="line">	console.log(a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test();</span><br><span class="line"></span><br><span class="line">new Test();</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">0</span><br><span class="line">5</span><br><span class="line">0</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line">undefined</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
-<h1 id="11、下面题目输出什么"><a href="#11、下面题目输出什么" class="headerlink" title="11、下面题目输出什么"></a>11、下面题目输出什么</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function test() &#123;</span><br><span class="line">	var foo;</span><br><span class="line">	console.log(foo);</span><br><span class="line">	foo = 2;</span><br><span class="line">	console.log(foo);</span><br><span class="line">	console.log(hello);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test();</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">undefined</span><br><span class="line">2</span><br><span class="line">报错, hello is not defined</span><br></pre></td></tr></table></figure>
-<h1 id="12、下面题目输出什么"><a href="#12、下面题目输出什么" class="headerlink" title="12、下面题目输出什么"></a>12、下面题目输出什么</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">function print() &#123;</span><br><span class="line">	var marty = &#123;</span><br><span class="line">		name: &apos;marty&apos;,</span><br><span class="line">		printName: function() &#123;</span><br><span class="line">			console.log(this.name);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">	var test1 = &#123;</span><br><span class="line">		name: &apos;test1&apos;</span><br><span class="line">	&#125;;</span><br><span class="line">	var test2 = &#123;</span><br><span class="line">		name: &apos;test2&apos;</span><br><span class="line">	&#125;;</span><br><span class="line">	var test3 = &#123;</span><br><span class="line">		name: &apos;test3&apos;</span><br><span class="line">	&#125;;</span><br><span class="line">	test3.printName = marty.printName;</span><br><span class="line">	var printName2 = marty.printName.bind(&#123;name: 123&#125;);   </span><br><span class="line">	marty.printName.call(test1);                          //test1</span><br><span class="line">	marty.printName.apply(test2);                         //test2</span><br><span class="line">	printName2()                                          //123</span><br><span class="line">	test3.printName();                                    //test3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">test1</span><br><span class="line">test2</span><br><span class="line">123</span><br><span class="line">test3</span><br></pre></td></tr></table></figure>
-<h1 id="13、下面题目输出什么？"><a href="#13、下面题目输出什么？" class="headerlink" title="13、下面题目输出什么？"></a>13、下面题目输出什么？</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var bar = &#123;</span><br><span class="line">    a: &apos;002&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function print() &#123;</span><br><span class="line">    bar.a = &apos;a&apos;;</span><br><span class="line">    Object.prototype.b = &apos;b&apos;;</span><br><span class="line">    return function inner() &#123;</span><br><span class="line">        console.log(bar.a);</span><br><span class="line">        console.log(bar.b);             </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print()();</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">b</span><br></pre></td></tr></table></figure>
-<h1 id="14、把一个有序的数组进行乱序"><a href="#14、把一个有序的数组进行乱序" class="headerlink" title="14、把一个有序的数组进行乱序"></a>14、把一个有序的数组进行乱序</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1, 2, 3, 4, 5, 6, 7];</span><br><span class="line">arr.sort(function() &#123;</span><br><span class="line">	return Math.random() - 0.5;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h1 id="15、写出下面的排序函数"><a href="#15、写出下面的排序函数" class="headerlink" title="15、写出下面的排序函数"></a>15、写出下面的排序函数</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">var lin = &#123;</span><br><span class="line">	name: &apos;johnny&apos;,</span><br><span class="line">	old: 25</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var chen = &#123;</span><br><span class="line">	name: &apos;jolie&apos;,</span><br><span class="line">	old: 23</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var bao = &#123;</span><br><span class="line">	name: &apos;baobao&apos;,</span><br><span class="line">	old: 3</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var arr = [lin, chen, bao];</span><br><span class="line">arr.sort(function(a, b) &#123;</span><br><span class="line">	return a.old - b.old;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h1 id="16、下面题目对象最终变成什么？"><a href="#16、下面题目对象最终变成什么？" class="headerlink" title="16、下面题目对象最终变成什么？"></a>16、下面题目对象最终变成什么？</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;</span><br><span class="line">	&apos;2&apos;: &apos;a&apos;,</span><br><span class="line">	&apos;3&apos;: &apos;b&apos;,</span><br><span class="line">	&apos;length&apos;: 2,</span><br><span class="line">	&apos;push&apos;: Array.prototype.push</span><br><span class="line">&#125;</span><br><span class="line">obj.push(&apos;c&apos;);</span><br><span class="line">obj.push(&apos;d&apos;);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">var obj = &#123;</span><br><span class="line">	&apos;2&apos;: &apos;c&apos;,</span><br><span class="line">	&apos;3&apos;: &apos;d&apos;,</span><br><span class="line">	length: 4,</span><br><span class="line">	&apos;push&apos;: Array.prototype.push</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">按照Array.prototype.push的方法可解答</span><br><span class="line">Array.prototype.push = function(target) &#123;</span><br><span class="line">	obj[obj.length] = target;</span><br><span class="line">	obj.length++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="17、新建函数type来输出值的类型，区分对象和值"><a href="#17、新建函数type来输出值的类型，区分对象和值" class="headerlink" title="17、新建函数type来输出值的类型，区分对象和值"></a>17、新建函数type来输出值的类型，区分对象和值</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">function type(target) &#123;</span><br><span class="line">		var ret = typeof(target);</span><br><span class="line">    var template = &#123;</span><br><span class="line">        &apos;[object Array]&apos;: &apos;array&apos;,</span><br><span class="line">        &apos;[object Object]&apos;: &apos;object&apos;,</span><br><span class="line">        &apos;[object Number]&apos;: &apos;number - object&apos;,</span><br><span class="line">        &apos;[object Boolean]&apos;: &apos;boolean - object&apos;,</span><br><span class="line">        &apos;[object String]&apos;: &apos;string - object&apos;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (target === null) &#123;</span><br><span class="line">        return &apos;null&apos;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (ret == &apos;object&apos;) &#123;</span><br><span class="line">        return template[Object.prototype.toString.call(target)];</span><br><span class="line">    &#125;</span><br><span class="line">    return ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="18、-数组去重"><a href="#18、-数组去重" class="headerlink" title="18、 数组去重"></a>18、 数组去重</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1, 2, 1, 2, 3, 3, &apos;a&apos;, &apos;b&apos;, &apos;a&apos;, &apos;c&apos;, &apos;b&apos;];</span><br><span class="line">Array.prototype.unique = function () &#123;</span><br><span class="line">    var temp = &#123;&#125;,</span><br><span class="line">        arr = [],</span><br><span class="line">        len = this.length;</span><br><span class="line"></span><br><span class="line">    for (var i = 0; i &lt; len; i++) &#123;</span><br><span class="line">        if (!temp[this[i]]) &#123;</span><br><span class="line">            temp[this[i]] = &apos;1&apos;;</span><br><span class="line">            arr.push(this[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/14/javascript/语言篇/小知识/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ifunnyy">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/14/javascript/语言篇/小知识/" itemprop="url">小知识</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T17:10:00+08:00">
-                2018-08-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/javascript随记/" itemprop="url" rel="index">
-                    <span itemprop="name">javascript随记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="数字的toString"><a href="#数字的toString" class="headerlink" title="数字的toString"></a>数字的toString</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">123.toString()</span><br><span class="line">//这个是报错的，因为.的优先级最高，系统会识别成浮点型</span><br><span class="line"></span><br><span class="line">//要写成这样</span><br><span class="line">var num = 123;</span><br><span class="line">num.toString();</span><br><span class="line"></span><br><span class="line">//或者</span><br><span class="line">Object.prototype.toString.call(123)</span><br></pre></td></tr></table></figure>
-<h1 id="js浮点型的精度bug"><a href="#js浮点型的精度bug" class="headerlink" title="js浮点型的精度bug"></a>js浮点型的精度bug</h1><p>可正常计算的范围，小数点前16位，后16位。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(0.14 * 100);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">14.000000000000002</span><br></pre></td></tr></table></figure>
-<p>这个是js的bug，所以后续避免直接使用float进行操作</p>
-<p>Math.round() 四舍五入，负数0.5不会+1<br>Math.ceil()  向上取整<br>Math.floor() 向下取整</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">for (var i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">	如果是直接Math.random().toFixed(2) * 100，就会出现浮点型精度错误的问题</span><br><span class="line">	var num = Math.ceil(Math.random().toFixed(2) * 100);</span><br><span class="line">	//var num = Math.ceil(Math.random() * 100);</span><br><span class="line">	console.log(num);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="获取对象上所有的自有键"><a href="#获取对象上所有的自有键" class="headerlink" title="获取对象上所有的自有键"></a>获取对象上所有的自有键</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var a = &#123;a: &apos;b&apos;, c: &apos;d&apos;&#125;;</span><br><span class="line">console.log(Object.keys(a));</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">[&apos;a&apos;, &apos;c&apos;]</span><br></pre></td></tr></table></figure>
-<h1 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h1><p>一旦经历过var的操作，所得出的属性，这种属性叫做不可配置的属性，是delete不掉的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var num = 123;</span><br><span class="line"></span><br><span class="line">delete num;           // false, 删除不掉</span><br><span class="line">delete window.num;    // false, 删除不掉</span><br><span class="line"></span><br><span class="line">var obj = &#123;</span><br><span class="line">	num: 123;</span><br><span class="line">&#125;</span><br><span class="line">delete obj.num;       // true, 删除掉</span><br><span class="line">delete obj;           // false, 删除不掉</span><br><span class="line"></span><br><span class="line">window.num = 123;</span><br><span class="line">delete window.num;    // true, 删除掉</span><br></pre></td></tr></table></figure>
-<h1 id="es3-0和es5-0"><a href="#es3-0和es5-0" class="headerlink" title="es3.0和es5.0"></a>es3.0和es5.0</h1><p>现在浏览器基本都是基于es3.0的方法加上es5.0的新增方法使用的</p>
-<p>es3.0和es5.0产生冲突的部分</p>
-<p>es5.0严格模式，那么es3.0和es5.0产生冲突的部分就是用es5.0，否则用es3.0的方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;use strict&apos;;</span><br></pre></td></tr></table></figure>
-<p>不支持with, arguments, callee, func, caller, 变量赋值前必须声明，局部this必须被赋值(Person.call(null/undefined)赋值什么就是什么)，拒绝重复属性和参数</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/14/javascript/语言篇/回顾基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ifunnyy">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/14/javascript/语言篇/回顾基础/" itemprop="url">基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T16:01:00+08:00">
-                2018-08-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/javascript随记/" itemprop="url" rel="index">
-                    <span itemprop="name">javascript随记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="严格模式-‘use-strict’"><a href="#严格模式-‘use-strict’" class="headerlink" title="严格模式 ‘use strict’"></a>严格模式 ‘use strict’</h1><p>ECMAScript 5 引入严格模式(‘strict mode’)概念。通过严格模式，在函数内部选择进行较为严格的全局或局部的错误条件检测，使用严格模式的好处是可以提早知道代码中的存在的错误，及时捕获一些可能导致编程错误的ECMAScript行为。在开发中使用严格模式能帮助我们早发现错误。</p>
-<p>将’use strict’放在脚本文件的第一行，则整个脚本都将以”严格模式”运行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;use struct&apos;;</span><br></pre></td></tr></table></figure>
-<h1 id="声明并输出"><a href="#声明并输出" class="headerlink" title="声明并输出"></a>声明并输出</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var MYAPP = &#123;&#125;;</span><br><span class="line">var a = &apos;Hello World!&apos;;</span><br><span class="line">console.log(a);</span><br><span class="line"></span><br><span class="line">var arr = [&apos;小明&apos;, &apos;小红&apos;, &apos;小白&apos;, &apos;小鬼&apos;];</span><br><span class="line">console.log(&apos;欢迎&apos; + arr.slice(0, 2).join(&apos;,&apos;) + &apos;和&apos; + arr[arr.length - 1] + &apos;同学&apos;);</span><br><span class="line"></span><br><span class="line">var person = &#123;</span><br><span class="line">	name: &apos;小明&apos;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h1 id="判断一个属性是否是本身所拥有，而不是继承的"><a href="#判断一个属性是否是本身所拥有，而不是继承的" class="headerlink" title="判断一个属性是否是本身所拥有，而不是继承的"></a>判断一个属性是否是本身所拥有，而不是继承的</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">person.hasOwnProperty(&apos;name&apos;)</span><br></pre></td></tr></table></figure>
-<h1 id="Array的循环"><a href="#Array的循环" class="headerlink" title="Array的循环"></a>Array的循环</h1><p>由于Array也是对象，而它的每个元素的索引被视为对象的属性，因此，for … in循环可以直接循环出Array的索引</p>
-<p>for … in对Array的循环得到的是String而不是Number。</p>
-<p>for … in循环由于历史遗留问题，它遍历的实际上是对象的属性名称。一个Array数组实际上也是一个对象，它的每个元素的索引被视为一个属性。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var a = [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;];</span><br><span class="line">a.name = &apos;Johnny&apos;;</span><br><span class="line">for (var i in a) &#123;</span><br><span class="line">	console.log(i + &apos;(&apos; + typeof i + &apos;) = &apos; + a[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">0(string) = a</span><br><span class="line">1(string) = b</span><br><span class="line">2(string) = c</span><br><span class="line">name(string) = Johnny</span><br></pre></td></tr></table></figure>
-<p>使用for … of循环遍历集合，它只循环集合本身的元素</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var a = [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;];</span><br><span class="line">a.name = &apos;Johnny&apos;;</span><br><span class="line">for (var i of a) &#123;</span><br><span class="line">	console.log(i + &apos;(&apos; + typeof i + &apos;)&apos;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">a(string)</span><br><span class="line">b(string)</span><br><span class="line">c(string)</span><br></pre></td></tr></table></figure>
-<p>使用forEach()进行遍历</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var a = [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;];</span><br><span class="line">a.name = &apos;Johnny&apos;;</span><br><span class="line">a.forEach(function (value, index, array) &#123;</span><br><span class="line">    console.log(value + &apos;,&apos; + index + &apos;,&apos; + array);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">a,0,a,b,c</span><br><span class="line">b,1,a,b,c</span><br><span class="line">c,2,a,b,c</span><br></pre></td></tr></table></figure>
-<h1 id="try-catch"><a href="#try-catch" class="headerlink" title="try catch"></a>try catch</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">try&#123;&#125; catch(e)&#123;&#125; finany&#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>Error.name的六种值对应的信息：</p>
+            <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><ul>
+<li>KVO是Key-value observing的缩写。</li>
+<li>KVO是Objective-C对<font color="red">观察者设计模式</font>的又一实现。</li>
+<li><p>Apple使用了isa混写（<font color="red">isa-swizzling</font>）来实现KVO。</p>
+<h1 id="机制和原理"><a href="#机制和原理" class="headerlink" title="机制和原理"></a>机制和原理</h1></li>
+</ul>
+<p><img src="/2019/01/28/objective-c/KVO/1FB3AECC-19BC-4F08-823E-8504AE7F0E71.png" alt="1FB3AECC-19BC-4F08-823E-8504AE7F0E71"></p>
 <ol>
-<li>EvalError: eval()的使用与定义不一致</li>
-<li>RangeError: 数组越界</li>
-<li>ReferenceError: 非法或不能识别的引用数值</li>
-<li>SyntaxError: 发生语法解析错误</li>
-<li>TypeError: 操作书类型错误</li>
-<li>URIError: URI处理函数使用不当</li>
+<li><p>当我们注册一个对象的观察者，实际上是调用了系统的addObserver:forKeyPath…这样的方法。</p>
+</li>
+<li><p>调用了addObserver:forkeyPath…方法后，系统会在运行时动态创建一个NSKVONotifying_Class。</p>
+</li>
+<li><p>然后会将原来Class的isa指针指向新创建的NSKVONitifying_Class这个类。（这种实际上就是isa-swizzling的标志）</p>
+</li>
+<li><p>NSKVONitifying_Class实际上Class的子类，这样子是为了重写Class的Setter方法。</p>
+</li>
+<li><p>NSKVONitifying_Class通过重写Class的Setter方法来达到可以通知所有观察者的目的。</p>
+</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">function abs(x) &#123;</span><br><span class="line">	if (typeof x !== &apos;number&apos;) &#123;</span><br><span class="line">		throw &apos;Not a number&apos;;</span><br><span class="line">	&#125;</span><br><span class="line">	if (x &gt;= 0) &#123;</span><br><span class="line">		return x;</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		return -x;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">try &#123;</span><br><span class="line">	console.log(abs(&quot;11&quot;));</span><br><span class="line">&#125; catch (error) &#123;</span><br><span class="line">	console.log(error);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">Not a number</span><br><span class="line"></span><br><span class="line">try &#123;</span><br><span class="line">	console.log(abs(11));</span><br><span class="line">&#125; catch (error) &#123;</span><br><span class="line">	console.log(error);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">11</span><br></pre></td></tr></table></figure>
-<h1 id="和-区别"><a href="#和-区别" class="headerlink" title="== 和 === 区别"></a>== 和 === 区别</h1><p>简单来说： == 代表相同， === 代表严格相同</p>
-<p>当进行双等号比较时候： 先检查两个操作数数据类型，如果相同， 则进行===比较， 如果不同， 则愿意为你进行一次类型转换， 转换成相同类型后再进行比较， 而===比较时， 如果类型不同，直接就是false。</p>
-<p>双等号 ==</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(1) 如果两个值类型相同，再进行三个等号(===)的比较</span><br><span class="line"></span><br><span class="line">(2) 如果两个值类型不同，也有可能相等，需根据以下规则进行类型转换在比较：</span><br><span class="line">		1) 如果一个是null，一个是undefined，那么相等</span><br><span class="line">		2) 如果一个是字符串，一个是数值，把字符串转换成数值之后再进行比较</span><br><span class="line">		</span><br><span class="line">(3) 如果是对象相比，要地址相同才相等，所以 &#123;&#125; == &#123;&#125;，一定为false</span><br></pre></td></tr></table></figure>
-<p>三等号 ===</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(1) 如果类型不同，就一定不相等</span><br><span class="line"></span><br><span class="line">(2) 如果两个都是数值，并且是同一个值，那么相等；如果其中至少一个是NaN，那么不相等。（判断一个值是否是NaN，只能使用isNaN( )来判断）</span><br><span class="line"></span><br><span class="line">(3) 如果两个都是字符串，每个位置的字符都一样，那么相等，否则不相等。</span><br><span class="line"></span><br><span class="line">(4) 如果两个值都是true，或是false，那么相等</span><br><span class="line"></span><br><span class="line">(5) 如果两个值都引用同一个对象或是函数，那么相等，否则不相等</span><br><span class="line"></span><br><span class="line">(6) 如果两个值都是null，或是undefined，那么相等</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>（面试题）isa混写技术（isa-swizzling）在KVO是怎么样体现的</p>
+<p>​    当我们调用addObserve:forKeyPath:之后，系统会在运行时动态创建一个NSKVONitifying这么一个    类。同时将原来类的isa指针指向新创建的类。</p>
+</blockquote>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><h2 id="KVO实践代码"><a href="#KVO实践代码" class="headerlink" title="KVO实践代码"></a>KVO实践代码</h2><p>MObject</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface MObject : NSObject</span><br><span class="line">@property (nonatomic, assign) int value;</span><br><span class="line">@end</span><br><span class="line">    </span><br><span class="line">#import &quot;MObject.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation MObject</span><br><span class="line">- (instancetype)init</span><br><span class="line">&#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">        _value = 0;</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)plusOne</span><br><span class="line">&#123;</span><br><span class="line">    _value++;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>MObserver</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface MObserver : NSObject</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">#import &quot;MObserver.h&quot;</span><br><span class="line">#import &quot;MObject.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation MObserver</span><br><span class="line"></span><br><span class="line">- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change context:(void *)context</span><br><span class="line">&#123;</span><br><span class="line">    // 判断类和判断keyPath</span><br><span class="line">    if ([object isKindOfClass:[MObject class]] &amp;&amp; [keyPath isEqualToString:@&quot;value&quot;]) &#123;</span><br><span class="line">        NSNumber *valueNum = change[NSKeyValueChangeNewKey];</span><br><span class="line">        NSLog(@&quot;valueNum = %@&quot;, valueNum);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>AppDelegate</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</span><br><span class="line">    // Override point for customization after application launch.</span><br><span class="line">    </span><br><span class="line">    MObject *mObj = [[MObject alloc] init];</span><br><span class="line">    MObserver *mObserver = [[MObserver alloc] init];</span><br><span class="line">    </span><br><span class="line">    // 调用kvo方法监听obj的value属性的变化</span><br><span class="line">    [mObj addObserver:mObserver forKeyPath:@&quot;value&quot; options:NSKeyValueObservingOptionNew context:NULL];</span><br><span class="line">    </span><br><span class="line">    // 调用setter方法</span><br><span class="line">    mObj.value = mObj.value + 1;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p><code>断点调试</code>（证明系统会在运行时动态创建一个NSKVONotifying_Class）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 在[mObj addObserver:mObserver forKeyPath:@&quot;value&quot; options:NSKeyValueObservingOptionNew context:NULL];前断点，在控制台输入:</span><br><span class="line">	po object_getClassName(mObj)</span><br><span class="line">// 返回:</span><br><span class="line">	&quot;MObject&quot;</span><br><span class="line">	</span><br><span class="line">// 在[mObj addObserver:mObserver forKeyPath:@&quot;value&quot; options:NSKeyValueObservingOptionNew context:NULL];后断点，在控制台输入:</span><br><span class="line">	po object_getClassName(mObj)</span><br><span class="line">// 返回:</span><br><span class="line">	&quot;NSKVONotifying_MObject&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="重写的Setter添加的方法"><a href="#重写的Setter添加的方法" class="headerlink" title="重写的Setter添加的方法"></a>重写的Setter添加的方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)willChangeValueForKey:(NSString *)key;</span><br><span class="line"></span><br><span class="line">- (void)didChangeValueForKey:(NSString *)key;</span><br></pre></td></tr></table></figure>
+<p>NSKVONotifying_Class的setter实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)setValue:(id)obj</span><br><span class="line">&#123;</span><br><span class="line">    [self willChangeValueForKey:@&quot;keyPath&quot;];</span><br><span class="line">    </span><br><span class="line">    // 调用父类实现，也即原来的实现</span><br><span class="line">    [super setValue:obj];</span><br><span class="line">    </span><br><span class="line">    [self didChangeValueForKey:@&quot;keyPath&quot;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>（面试题）通过kvc设置value能否生效？</p>
+<p>​    可以</p>
+<p>（面试题）为什么通过kvc设置value能够生效？</p>
+<p>​    用kvc设置最终会到value的setter方法</p>
+</blockquote>
+<blockquote>
+<p>（面试题）通过成员变量直接复制value能否生效？</p>
+<p>​    不可以，比如_value += 1;</p>
+<p>​    但是可以手动达到kvo的效果，比如：</p>
+<p>​    - (void)pulsOne</p>
+<p>​    {</p>
+<p>​        [self willChangeValueForKey:@”value”];</p>
+<p>​        _value += 1;</p>
+<p>​        [self didChangeValueForKey:@”value”];</p>
+<p>​    }</p>
+</blockquote>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>使用setter方法改变之KVO才会生效。</li>
+<li>使用setValue:forKey:改变值KVO才会生效。</li>
+<li>成员变量直接修改需<font color="red">手动添加</font>KVO才会生效。</li>
+</ul>
 
           
         
@@ -1235,7 +1105,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/14/javascript/语言篇/类数组/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/28/objective-c/通知（NSNotification）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -1254,7 +1124,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/14/javascript/语言篇/类数组/" itemprop="url">类数组</a></h1>
+                <a class="post-title-link" href="/2019/01/28/objective-c/通知（NSNotification）/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -1266,8 +1136,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T14:42:00+08:00">
-                2018-08-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-28T02:01:03+08:00">
+                2019-01-28
               </time>
             
 
@@ -1276,28 +1146,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/javascript随记/" itemprop="url" rel="index">
-                    <span itemprop="name">javascript随记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -1328,14 +1176,12 @@
       
         
           
-            <h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><ol>
-<li>可以利用属性名模拟数组的特性</li>
-<li>可以动态的增长length属性</li>
-<li>如果强行让类数组调用push方法，则会根据length属性值的位置进行属性的扩充。</li>
-</ol>
-<p>类数组生成的必要条件：</p>
-<p>属性要为索引(数字)属性，必须有length属性，最好加上push</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;</span><br><span class="line">	0: &apos;a&apos;,</span><br><span class="line">	1: &apos;b&apos;,</span><br><span class="line">	length: 2,</span><br><span class="line">	push: Array.prototype.push,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><ul>
+<li>使用<font color="red">观察者模式</font>来实现的，用于跨层传递消息的机制。</li>
+<li>传递方式为<font color="red">一对多</font>。</li>
+</ul>
+<p><img src="/2019/01/28/objective-c/通知（NSNotification）/8C73605E-A19B-4803-8D9A-1554FA19C1C8.png" alt="8C73605E-A19B-4803-8D9A-1554FA19C1C8"></p>
+<h1 id="如何实现通知机制"><a href="#如何实现通知机制" class="headerlink" title="如何实现通知机制"></a>如何实现通知机制</h1><p>NSNotificaitioncenter内部应该是服务一个Map表或者字典，key是notificationName，value是一个数组列表Observers_list，Observers_list里面每个成员应该包含注册通知的观察者，其次还得包含关于观察者调用的方法。</p>
 
           
         
@@ -1384,7 +1230,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/14/javascript/语言篇/数组/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/28/objective-c/代理（Delegate）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -1403,7 +1249,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/14/javascript/语言篇/数组/" itemprop="url">数组</a></h1>
+                <a class="post-title-link" href="/2019/01/28/objective-c/代理（Delegate）/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -1415,8 +1261,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T14:33:00+08:00">
-                2018-08-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-28T01:51:01+08:00">
+                2019-01-28
               </time>
             
 
@@ -1425,28 +1271,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/javascript随记/" itemprop="url" rel="index">
-                    <span itemprop="name">javascript随记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -1477,43 +1301,21 @@
       
         
           
-            <h1 id="数组的定义"><a href="#数组的定义" class="headerlink" title="数组的定义"></a>数组的定义</h1><p>new Array(length/content);</p>
-<p>字面量 []</p>
-<h1 id="数组的读和写"><a href="#数组的读和写" class="headerlink" title="数组的读和写"></a>数组的读和写</h1><p>arr[num]            //不可以溢出读，但是不报错，输出undefined</p>
-<p>arr[num] = xxx      //不可以溢出写   </p>
-<h1 id="数组的方法"><a href="#数组的方法" class="headerlink" title="数组的方法"></a>数组的方法</h1><p>下面的方法都是es3.0的方法</p>
-<h5 id="改变原数组"><a href="#改变原数组" class="headerlink" title="改变原数组"></a>改变原数组</h5><p>push:</p>
-<p>在数组后面加一个值或者一串值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1, 2];</span><br><span class="line">arr.push(3);</span><br><span class="line">console.log(arr);</span><br><span class="line"></span><br><span class="line">arr.push(4, 5, 6);</span><br><span class="line">console.log(arr);</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">[1, 2, 3]</span><br><span class="line">[1, 2, 3, 4, 5, 6]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//模仿push的方法</span><br><span class="line">Array.prototype.push = function () &#123;</span><br><span class="line">    for (var i = 0; i &lt; arguments.length; i++) &#123;</span><br><span class="line">        this[this.length] = arguments[i];</span><br><span class="line">    &#125;</span><br><span class="line">    return this.length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>pop:</p>
-<p>在数组后面去除一个值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1, 2, 3];</span><br><span class="line">arr.pop();</span><br><span class="line">console.log(arr);</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">[1, 2]</span><br></pre></td></tr></table></figure>
-<p>shift:</p>
-<p>跟pop的相反，在数组前面去除一个值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1, 2, 3];</span><br><span class="line">arr.shift();</span><br><span class="line">console.log(arr);</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">[2, 3]</span><br></pre></td></tr></table></figure>
-<p>unshift:</p>
-<p>跟push的相反，在数组前面加一个值或者一串值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var arr = [3, 4];</span><br><span class="line">arr.unshift(2);</span><br><span class="line">console.log(arr);</span><br><span class="line"></span><br><span class="line">arr.unshift(0, 1);</span><br><span class="line">console.log(arr);</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">[2, 3, 4]</span><br><span class="line">[0, 1, 2, 3, 4]</span><br></pre></td></tr></table></figure>
-<p>sort:</p>
-<p>如果调用该方法时没有使用参数，将按字母顺序对数组中的元素进行排序，说得更精确点，是按照字符编码的顺序进行排序。要实现这一点，首先应把数组的元素都转换成字符串（如有必要），以便进行比较。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var arr = [3, 5, 1, 2, 10, 9, 7];</span><br><span class="line">arr.sort();</span><br><span class="line">console.log(arr);</span><br><span class="line"></span><br><span class="line">var arr1 = [3, 5, 1, 2, 10, 9, 7];</span><br><span class="line">arr1.sort(function(a, b) &#123;</span><br><span class="line">	return a - b; </span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">[1, 10, 2, 3, 5, 7, 9]      //不传参数就是按照字符编码排序的</span><br><span class="line">[1, 2, 3, 5, 7, 9, 10]</span><br></pre></td></tr></table></figure>
-<p>reverse:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1, 2, 3];</span><br><span class="line">arr.reverse();</span><br><span class="line">console.log(arr);</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">[3, 2, 1]</span><br></pre></td></tr></table></figure>
-<p>splice:</p>
-<p>splice(从第几位开始， 截取多少的长度， 在切口处添加新的数据);</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1, 1, 2, 2, 3, 3];</span><br><span class="line">arr.splice(1, 2);</span><br><span class="line">console.log(arr);</span><br><span class="line"></span><br><span class="line">var arr1 = [1, 1, 2, 2, 3, 3];</span><br><span class="line">arr1.splice(1, 1, 0, 0, 0);</span><br><span class="line">console.log(arr1);</span><br><span class="line"></span><br><span class="line">var arr2 = [1, 2, 3, 5];</span><br><span class="line">arr2.splice(3, 0, 4);</span><br><span class="line">console.log(arr2);</span><br><span class="line"></span><br><span class="line">var arr3 = [1, 2, 3, 4];</span><br><span class="line">arr3.splice(-1, 1);</span><br><span class="line">console.log(arr3);</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">[1, 2, 3, 3]</span><br><span class="line">[1, 0, 0, 0, 2, 2, 3, 3]</span><br><span class="line">[1, 2, 3, 4, 5]</span><br><span class="line">[1, 2, 3]</span><br></pre></td></tr></table></figure>
-<h5 id="不改变原数组"><a href="#不改变原数组" class="headerlink" title="不改变原数组"></a>不改变原数组</h5><p>concat:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var arr1 = [1, 2, 3];</span><br><span class="line">var arr2 = [4, 5, 6];</span><br><span class="line">var arr = arr1.concat(arr2);</span><br><span class="line">console.log(arr);</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">[1, 2, 3, 4, 5, 6]</span><br></pre></td></tr></table></figure>
-<p>join</p>
-<p>参数是字符串，不传是按’,’来拼接</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1, 2, 3, 4, 5];</span><br><span class="line">console.log(arr.join(&apos;-&apos;));</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">1-2-3-4-5</span><br></pre></td></tr></table></figure>
-<p>split</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var string = &quot;1-2-3-4-5&quot;;</span><br><span class="line">console.log(string.split(&apos;-&apos;));</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">[1, 2, 3, 4, 5]</span><br></pre></td></tr></table></figure>
-<p>toString </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1, 2, 3, 4];</span><br><span class="line">console.log(arr.toString());</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">1,2,3,4,5,6</span><br></pre></td></tr></table></figure>
-<p>slice</p>
-<p>截取，从第几位截取到第几位</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var arr = [1, 2, 3, 4, 5];</span><br><span class="line">console.log(arr.slice(1, 2));</span><br><span class="line">console.log(arr.slice(2));</span><br><span class="line">console.log(arr.slice(-2));</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">[2]</span><br><span class="line">[3, 4, 5]</span><br><span class="line">[4, 5]</span><br></pre></td></tr></table></figure>
+            <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><ul>
+<li>准确的说是一种软件设计模式，代理模式。</li>
+<li>iOS当中以@protocol形式体现。</li>
+<li>传递方式一对一。</li>
+</ul>
+<h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1><p><img src="/2019/01/28/objective-c/代理（Delegate）/87C791CA-59A6-4E99-94DF-1D651AC292F5.png" alt="87C791CA-59A6-4E99-94DF-1D651AC292F5"></p>
+<blockquote>
+<p>（面试题）代理中的方法是必须实现的么</p>
+<p>​    不一定，看方法的标识，如果是@required的话就是必须实现，@optional就是可选实现。</p>
+</blockquote>
+<h1 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h1><ul>
+<li><p>一般代理的声明为weak，以规避循环引用。</p>
+<p><img src="/2019/01/28/objective-c/代理（Delegate）/DE364D42-639E-4A37-A50E-C535116F815E.png" alt="DE364D42-639E-4A37-A50E-C535116F815E"></p>
+</li>
+</ul>
 
           
         
@@ -1562,7 +1364,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/14/javascript/语言篇/拷贝/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/28/objective-c/扩展（Extension）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -1581,7 +1383,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/14/javascript/语言篇/拷贝/" itemprop="url">拷贝</a></h1>
+                <a class="post-title-link" href="/2019/01/28/objective-c/扩展（Extension）/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -1593,8 +1395,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T14:23:00+08:00">
-                2018-08-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-28T01:30:12+08:00">
+                2019-01-28
               </time>
             
 
@@ -1603,28 +1405,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/javascript随记/" itemprop="url" rel="index">
-                    <span itemprop="name">javascript随记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -1655,16 +1435,16 @@
       
         
           
-            <h1 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;</span><br><span class="line">	name: &apos;abc&apos;,</span><br><span class="line">	age: 123,</span><br><span class="line">	sex: &apos;female&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function clone(origin, target) &#123;</span><br><span class="line">	var target = target || &#123;&#125;;</span><br><span class="line">	for (var prop in origin) &#123;</span><br><span class="line">		if (origin.hasOwnProperty(prop)) &#123;</span><br><span class="line">			target[prop] = origin[prop];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return target;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样拷贝完的对象里面的引用值会沿用样板对象里面的引用值。</p>
-<h1 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h1><ol>
-<li>遍历对象</li>
-<li>判断是不是原始值 typeof() toString</li>
-<li>判断是数组还是对象</li>
-<li>建立对象的数组或对象</li>
-<li>递归</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;</span><br><span class="line">    name: &apos;abc&apos;,</span><br><span class="line">    age: 123,</span><br><span class="line">    sex: &apos;female&apos;,</span><br><span class="line">    card: [&apos;visa&apos;, &apos;unionpay&apos;],</span><br><span class="line">    wife: &#123;</span><br><span class="line">        name: &apos;ssss&apos;,</span><br><span class="line">        card: [&apos;visa&apos;]</span><br><span class="line">    &#125;,</span><br><span class="line">    son: null</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var obj1 = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">function deepClone(origin, target) &#123;</span><br><span class="line">    var target = target || &#123;&#125;,</span><br><span class="line">        toStr  = Object.prototype.toString,</span><br><span class="line">        arrStr = &apos;[object Array]&apos;;</span><br><span class="line"></span><br><span class="line">    for (var prop in origin) &#123;</span><br><span class="line">        if (origin.hasOwnProperty(prop)) &#123;</span><br><span class="line">            if (origin[prop] != null &amp;&amp; typeof(origin[prop]) == &apos;object&apos;) &#123;</span><br><span class="line">                target[prop] = toStr.call(origin[prop]) == arrStr ? [] : &#123;&#125;;</span><br><span class="line">                deepClone(origin[prop], target[prop]);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                target[prop] = origin[prop];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return target;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">deepClone(obj, obj1);</span><br></pre></td></tr></table></figure>
+            <h1 id="扩展能做什么"><a href="#扩展能做什么" class="headerlink" title="扩展能做什么"></a>扩展能做什么</h1><ul>
+<li>声明私有属性</li>
+<li>声明私有变量</li>
+<li>声明私有成员变量</li>
+</ul>
+<h1 id="扩展特点"><a href="#扩展特点" class="headerlink" title="扩展特点"></a>扩展特点</h1><ul>
+<li>编译时决议。</li>
+<li>只以声明的形式存在，多数情况下寄生于宿主类的.m中。</li>
+<li>不能为系统类添加扩展。</li>
+</ul>
 
           
         
@@ -1713,7 +1493,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/14/javascript/语言篇/继承模式/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/24/objective-c/关联对象（Associations）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -1732,7 +1512,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/14/javascript/语言篇/继承模式/" itemprop="url">继承模式</a></h1>
+                <a class="post-title-link" href="/2019/01/24/objective-c/关联对象（Associations）/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -1744,8 +1524,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T14:20:00+08:00">
-                2018-08-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-24T22:44:23+08:00">
+                2019-01-24
               </time>
             
 
@@ -1754,28 +1534,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/javascript随记/" itemprop="url" rel="index">
-                    <span itemprop="name">javascript随记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -1806,20 +1564,64 @@
       
         
           
-            <h1 id="传统形式-–-gt-原型链"><a href="#传统形式-–-gt-原型链" class="headerlink" title="传统形式 –&gt; 原型链"></a>传统形式 –&gt; 原型链</h1><p>过多的继承了没用的属性</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Grand.prototype.lastName = &apos;Lin&apos;;</span><br><span class="line">function Grand() &#123;</span><br><span class="line">&#125;</span><br><span class="line">var grand = new Grand();</span><br><span class="line"></span><br><span class="line">Father.prototype = grand;</span><br><span class="line">function Father() &#123;</span><br><span class="line">	this.name = &apos;Johnny&apos;</span><br><span class="line">&#125;</span><br><span class="line">var father = new Father();</span><br><span class="line"></span><br><span class="line">Son.prototype = father;</span><br><span class="line">function Son() &#123;</span><br><span class="line">	this.old = 2</span><br><span class="line">&#125;</span><br><span class="line">var son = new Son();</span><br></pre></td></tr></table></figure>
-<h1 id="借用构造函数"><a href="#借用构造函数" class="headerlink" title="借用构造函数"></a>借用构造函数</h1><ol>
-<li>不能继承借用的构造函数的原型    </li>
-<li>每次构造函数都要多走一个函数</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function Person(name, age, sex) &#123;</span><br><span class="line">	this.name = &apos;Lin &apos; + name;</span><br><span class="line">	this.age = age;</span><br><span class="line">	this.sex = sex;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function Student(name, age, sex, tel, grade) &#123;</span><br><span class="line">	Person.call(this, name, age, sex);</span><br><span class="line">	this.tel = tel;</span><br><span class="line">	this.grade = grade;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var student = new Student(&apos;Johnny&apos;, 123, &apos;male&apos;, 139, 2017);</span><br></pre></td></tr></table></figure>
-<h1 id="共享原型"><a href="#共享原型" class="headerlink" title="共享原型"></a>共享原型</h1><p>不能随意改动自己的原型</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Father.prototype.lastName = &apos;Lin&apos;;</span><br><span class="line">function Father() &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function Son() &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function inherit(Target, Origin) &#123;</span><br><span class="line">	Target.prototype = Origin.prototype;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">inherit(Son, Father);</span><br><span class="line"></span><br><span class="line">不足：</span><br><span class="line">Son.prototype.sex = &apos;male&apos;;</span><br><span class="line"></span><br><span class="line">var son = new Son();</span><br><span class="line">var father = new Father();</span><br><span class="line"></span><br><span class="line">console.log(son.sex);</span><br><span class="line">console.log(father.sex);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">male</span><br><span class="line">male</span><br></pre></td></tr></table></figure>
-<h1 id="圣杯模式"><a href="#圣杯模式" class="headerlink" title="圣杯模式"></a>圣杯模式</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">function inherit(Target, Origin) &#123;</span><br><span class="line">	function F() &#123;&#125;;</span><br><span class="line">	F.prototype = Origin.prototype;</span><br><span class="line">	Target.prototype = new F();</span><br><span class="line">	Target.prototype.constuctor = Target;</span><br><span class="line">	Target.prototype.uber = Origin.prototype;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Father.prototype.lastName = &apos;Lin&apos;;</span><br><span class="line">function Father() &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function Son() &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">inherit(Son, Father);</span><br><span class="line"></span><br><span class="line">Son.prototype.sex = &apos;male&apos;;</span><br><span class="line"></span><br><span class="line">var son = new Son();</span><br><span class="line">var father = new Father();</span><br><span class="line"></span><br><span class="line">console.log(son.sex);</span><br><span class="line">console.log(father.sex);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">male</span><br><span class="line">undefined</span><br></pre></td></tr></table></figure>
-<p>更加高端的写法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var inherit = (function() &#123;</span><br><span class="line">	var F = function() &#123;&#125;;</span><br><span class="line">	return function(Target, Origin) &#123;</span><br><span class="line">		F.prototype = Origin.prototype;</span><br><span class="line">		Target.prototype = new F();</span><br><span class="line">		Target.prototype.constuctor = Target;</span><br><span class="line">		Target.prototype.uber = Origin.prototype;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line">利用闭包实现变量私有化，F存在闭包里面</span><br></pre></td></tr></table></figure>
+            <h1 id="关联对象作用"><a href="#关联对象作用" class="headerlink" title="关联对象作用"></a>关联对象作用</h1><ul>
+<li>使用关联对象可以给分类添加“成员变量”。</li>
+<li>为现有的类添加私有变量以帮助实现细节。</li>
+<li>为现有的类添加公有属性</li>
+<li>为 <code>KVO</code> 创建一个关联的观察者</li>
+</ul>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过指定的key去object对象中读取关联值</span></span><br><span class="line"><span class="keyword">id</span> objc_getAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 存入一个值，使这个值和key相映射，然后把这个映射关系通过policy关联到object对象上，传入nil则移除已有的关联对象</span></span><br><span class="line"><span class="keyword">void</span> objc_setAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key, <span class="keyword">id</span> value, objc_AssociationPolicy policy);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据指定对象去移除它所有的关联对象，慎用，因为这样会移除掉别人添加的关联对象</span></span><br><span class="line"><span class="keyword">void</span> objc_removeAssociatedObjects(<span class="keyword">id</span> object)</span><br></pre></td></tr></table></figure>
+<h1 id="关联对象的本质"><a href="#关联对象的本质" class="headerlink" title="关联对象的本质"></a>关联对象的本质</h1><p>关联对象由系统提供的<strong><font color="red">AssociationsManager</font></strong>管理并在<strong><font color="red">AssociationsHashMap</font></strong>存储。</p>
+<p>所有对象的关联内容都在<strong><font color="red">同一个全局容器</font></strong>中。</p>
+<blockquote>
+<p>（面试题）用关联对象实现的为分类添加的“成员变量”储存到哪？</p>
+<p>​    都放在AssocationsManager里面的AssociationHashMap存储。并且所有的关联内容无论是为哪个分类创建的对象都会放在同一个全局容器里面。    </p>
+</blockquote>
+<p><img src="/2019/01/24/objective-c/关联对象（Associations）/1B3B51E3-593E-4351-9029-F31841E8BAFC.png" alt="1B3B51E3-593E-4351-9029-F31841E8BAFC"></p>
+<p><img src="/2019/01/24/objective-c/关联对象（Associations）/867F84EF-F895-4625-B29C-18786B329B09.png" alt="867F84EF-F895-4625-B29C-18786B329B09"></p>
+<h1 id="关联策略"><a href="#关联策略" class="headerlink" title="关联策略"></a>关联策略</h1><table>
+<thead>
+<tr>
+<th>关联策略</th>
+<th>等价属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OBJC_ASSOCIATION_ASSIGN</td>
+<td>@property (assign) or @property (unsafe_unretained)</td>
+<td>弱引用关联对象</td>
+</tr>
+<tr>
+<td>OBJC_ASSOCIATION_RETAIN_NONATOMIC</td>
+<td>@property (strong, nonatomic)</td>
+<td>强引用关联对象，且为非原子操作</td>
+</tr>
+<tr>
+<td>OBJC_ASSOCIATION_COPY_NONATOMIC</td>
+<td>@property (copy, nonatomic)</td>
+<td>复制关联对象，且为非原子操作</td>
+</tr>
+<tr>
+<td>OBJC_ASSOCIATION_RETAIN</td>
+<td>@property (strong, atomic)</td>
+<td>强引用关联对象，且为原子操作</td>
+</tr>
+<tr>
+<td>OBJC_ASSOCIATION_COPY</td>
+<td>@property (copy, atomic)</td>
+<td>复制关联对象，且为原子操作</td>
+</tr>
+</tbody>
+</table>
+<h1 id="const-void-key"><a href="#const-void-key" class="headerlink" title="const void *key"></a>const void *key</h1><p><code>const void *key</code>类型通常都是通常都是会采用静态变量来作为关键字，可以自己创建，也可以使用<code>@selector(XXX)</code>。</p>
+<p>第一种</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">char</span> nameKey;</span><br><span class="line"></span><br><span class="line">objc_setAssociatedObject(<span class="keyword">self</span>, &amp;nameKey, name,  OBJC_ASSOCIATION_RETAIN_NONATOMIC);</span><br></pre></td></tr></table></figure>
+<p>第二种</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">objc_setAssociatedObject(self, @selector(function), name,  OBJC_ASSOCIATION_RETAIN_NONATOMIC);</span><br><span class="line">// 或者</span><br><span class="line">objc_setAssociatedObject(self, _cmd, name,  OBJC_ASSOCIATION_RETAIN_NONATOMIC);</span><br><span class="line">// _cmd的作用域只在当前方法里，直指当前方法名@selector。</span><br></pre></td></tr></table></figure>
+<h1 id="DEMO"><a href="#DEMO" class="headerlink" title="DEMO"></a>DEMO</h1><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UIButton+Block.h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">void</span> (^btnBlock)(<span class="keyword">id</span> sender);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">UIButton</span> (<span class="title">Block</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)handelWithBlock:(btnBlock)block;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UIButton+Block.m</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#import <span class="meta-string">"UIButton+Block.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)handelWithBlock:(btnBlock)block &#123;</span><br><span class="line">    <span class="keyword">if</span> (block) &#123;</span><br><span class="line">        <span class="comment">// @selector(btnAction:)</span></span><br><span class="line">        objc_setAssociatedObject(<span class="keyword">self</span>, <span class="keyword">@selector</span>(btnAction:), block,  OBJC_ASSOCIATION_RETAIN_NONATOMIC);</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="keyword">self</span> addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(btnAction:) forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)btnAction:(<span class="keyword">id</span>)sender &#123;</span><br><span class="line">    btnBlock block = objc_getAssociatedObject(<span class="keyword">self</span>, <span class="keyword">@selector</span>(btnAction:));</span><br><span class="line">    <span class="keyword">if</span> (block) &#123;</span><br><span class="line">        block(sender);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 
           
         
@@ -1868,7 +1670,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/14/javascript/语言篇/对象枚举/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/24/objective-c/分类（Category）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -1887,7 +1689,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/14/javascript/语言篇/对象枚举/" itemprop="url">对象枚举</a></h1>
+                <a class="post-title-link" href="/2019/01/24/objective-c/分类（Category）/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -1899,8 +1701,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T14:16:00+08:00">
-                2018-08-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-24T14:54:44+08:00">
+                2019-01-24
               </time>
             
 
@@ -1909,28 +1711,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/javascript随记/" itemprop="url" rel="index">
-                    <span itemprop="name">javascript随记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -1961,17 +1741,163 @@
       
         
           
-            <h1 id="for…in"><a href="#for…in" class="headerlink" title="for…in"></a>for…in</h1><p>会返回原型的自己设置的属性</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;</span><br><span class="line">	name: &apos;123&apos;,</span><br><span class="line">	age: 123,</span><br><span class="line">	sex: &apos;male&apos;,</span><br><span class="line">	height: 180,</span><br><span class="line">	width: 100</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for (var prop in obj) &#123;</span><br><span class="line">	console.log(prop + &quot; &quot; + typeof(prop) + &quot; &quot; + obj[prop]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">name string 123</span><br><span class="line">age string 123</span><br><span class="line">sex string male</span><br><span class="line">height string 180</span><br><span class="line">width string 100</span><br></pre></td></tr></table></figure>
-<h1 id="hasOwnProperty-NaN"><a href="#hasOwnProperty-NaN" class="headerlink" title="hasOwnProperty"></a>hasOwnProperty</h1><p>返回一个布尔值，判断对象是否包含特定的自身（非继承）属性</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;</span><br><span class="line">	name: &apos;123&apos;,</span><br><span class="line">	age: 123,</span><br><span class="line">	sex: &apos;male&apos;,</span><br><span class="line">	height: 180,</span><br><span class="line">	width: 100,</span><br><span class="line">	__proto__: &#123;</span><br><span class="line">		lastName: &apos;li&apos;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">for (var prop in obj) &#123;</span><br><span class="line">	if (obj.hasOwnProperty(prop)) &#123;</span><br><span class="line">		console.log(prop + &quot; &quot; + typeof(prop) + &quot; &quot; + obj[prop]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">name string 123</span><br><span class="line">age string 123</span><br><span class="line">sex string male</span><br><span class="line">height string 180</span><br><span class="line">width string 100</span><br></pre></td></tr></table></figure>
-<h1 id="instanceof"><a href="#instanceof" class="headerlink" title="instanceof"></a>instanceof</h1><p>用来在运行时指出对象是否是特定类的一个实例。</p>
-<p>A对象是不是B构造函数构造出来的</p>
-<p>看A对象的原型链上有没有B的原型</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function Person() &#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var person = new Person();</span><br><span class="line"></span><br><span class="line">console.log(person instanceof Person);</span><br><span class="line">console.log(person instanceof Object);</span><br><span class="line">console.log(person instanceof Array);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">output:</span><br><span class="line">true</span><br><span class="line">true</span><br><span class="line">false</span><br></pre></td></tr></table></figure>
+            <h1 id="分类做了那些事"><a href="#分类做了那些事" class="headerlink" title="分类做了那些事"></a>分类做了那些事</h1><ul>
+<li>声明私有方法</li>
+<li>分解体积庞大的类文件</li>
+<li>把framework的私有方法公开</li>
+</ul>
+<h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><ul>
+<li>运行时决议，通过runtime添加</li>
+<li>可以为系统类添加分类</li>
+</ul>
+<h1 id="分类中都可以添加那些内容"><a href="#分类中都可以添加那些内容" class="headerlink" title="分类中都可以添加那些内容"></a>分类中都可以添加那些内容</h1><ul>
+<li>实例方法</li>
+<li>类方法</li>
+<li>协议</li>
+<li>属性（<strong>在分类中定义属性，实际上只是声明对应的get方法和set方法，并没有为我们在类中添加示实例变量</strong>）</li>
+<li>成员变量（<strong>使用关联对象技术</strong>）</li>
+</ul>
+<blockquote>
+<p>（面试题）分类有多个的情况下，各个分类都有一个同名的实例方法，最终哪个会失效</p>
+<p>​    最后编译的分类当中的方法会生效</p>
+</blockquote>
+<h1 id="分类源码结构"><a href="#分类源码结构" class="headerlink" title="分类源码结构"></a>分类源码结构</h1><p><img src="/2019/01/24/objective-c/分类（Category）/70449FE0-FA1D-4368-A671-3FCF141095FE.png" alt="70449FE0-FA1D-4368-A671-3FCF141095FE"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>分类添加的方法可以“覆盖”原类方法</li>
+<li>同名分类方法谁能生效取决于编译顺序</li>
+<li>名字相同的分类会引起编译报错</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/24/objective-c/Objective-C面试总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ifunnyy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/24/objective-c/Objective-C面试总结/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-24T14:52:39+08:00">
+                2019-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="技术要点"><a href="#技术要点" class="headerlink" title="技术要点"></a>技术要点</h1><p><img src="/2019/01/24/objective-c/Objective-C面试总结/0E637EBC-F541-4B4B-8BC5-D325F92746F7.png" alt="0E637EBC-F541-4B4B-8BC5-D325F92746F7"></p>
+<h1 id="笔试面试题"><a href="#笔试面试题" class="headerlink" title="笔试面试题"></a>笔试面试题</h1><h2 id="MRC下如何重写retain修饰变量的setter方法？"><a href="#MRC下如何重写retain修饰变量的setter方法？" class="headerlink" title="MRC下如何重写retain修饰变量的setter方法？"></a>MRC下如何重写retain修饰变量的setter方法？</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatiomic, retain) id obj;</span><br><span class="line">- (void)setObj:(id)obj &#123;</span><br><span class="line">    // 为啥要加这个判断，因为如果obj是_obj的话，在下面[_obj release]的时候就会把自己本身给释放掉，这时候程序就会出现异常奔溃。</span><br><span class="line">    if (_obj != obj) &#123;</span><br><span class="line">        [_obj release];</span><br><span class="line">        _obj = [obj retain];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="请简述分类实现原理"><a href="#请简述分类实现原理" class="headerlink" title="请简述分类实现原理"></a>请简述分类实现原理</h2><p>分类实现原理是由运行时来决议的，然后不同分类含有同名方法最后由谁实现取决于最后参与编译的是哪个分类，如果分类添加的方法刚好是宿主类的同名方法，那分类方法会覆盖宿主类的同名方法，这里的覆盖只是由于消息传递的过程中优先查找数组靠前位置的同名方法。实际上宿主类同名方法是存在的。</p>
+<h2 id="KVO内部实现原理"><a href="#KVO内部实现原理" class="headerlink" title="KVO内部实现原理"></a>KVO内部实现原理</h2><p>比如某个类调用addObserver:forKeyPath:这个方法后，系统就会在运行时动态创建该类的一个派生类NSNotifying，这个派生类会重写基类中任何被观察属性的setter方法。通过重写的setter方法实现真正的通知机制。(A-&gt;NSNotifying_A)</p>
+<h2 id="Foundation对象与Core-Foundation对象有什么区别"><a href="#Foundation对象与Core-Foundation对象有什么区别" class="headerlink" title="Foundation对象与Core Foundation对象有什么区别"></a>Foundation对象与Core Foundation对象有什么区别</h2><ul>
+<li>Foundation对象是OC的，Core Foundation对象是C对象的</li>
+<li>数据类型之间的转换<ul>
+<li>ARC: <code>__bridge_retained</code>、<code>__bridge_transfer</code></li>
+<li>非ARC：<code>__bridge</code></li>
+</ul>
+</li>
+</ul>
 
           
         
@@ -2011,7 +1937,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2061,7 +1987,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
