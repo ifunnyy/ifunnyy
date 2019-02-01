@@ -252,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/KVC/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/01/objective-c/类对象与元类对象&消息传递/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Johnny">
@@ -271,7 +271,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/31/objective-c/KVC/" itemprop="url">KVC</a></h1>
+                <a class="post-title-link" href="/2019/02/01/objective-c/类对象与元类对象&消息传递/" itemprop="url">类对象与元类对象&消息传递</a></h1>
         
 
         <div class="post-meta">
@@ -283,8 +283,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T13:46:00+08:00">
-                2019-01-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-01T13:46:00+08:00">
+                2019-02-01
               </time>
             
 
@@ -345,31 +345,59 @@
       
         
           
-            <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>KVC是Key-value coding的缩写。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (id)valueForKey:(NSString *)key;</span><br><span class="line"></span><br><span class="line">- (void)setValue:(id)value forKey:(NSString *)key;</span><br></pre></td></tr></table></figure>
-<h1 id="valueForKey实现逻辑"><a href="#valueForKey实现逻辑" class="headerlink" title="valueForKey实现逻辑"></a>valueForKey实现逻辑</h1><p><img src="/2019/01/31/objective-c/KVC/DA2C8749-9361-42F9-91A0-4CFE33CF234B.png" alt="DA2C8749-9361-42F9-91A0-4CFE33CF234B"></p>
-<ol>
-<li>系统会判断通过这个key访问的实例变量是否有相应的get方法，有则调用并返回。</li>
-<li>没有则会判断实例变量是否存在，存在则获取值并返回。</li>
-<li>不存在则会调用valueForUndefinedKey:方法并抛出NSUndefinedKeyException这个未定义key的异常。</li>
-</ol>
+            <h1 id="对象、类对象、元类对象"><a href="#对象、类对象、元类对象" class="headerlink" title="对象、类对象、元类对象"></a>对象、类对象、元类对象</h1><ul>
+<li><p><font color="red">类对象</font>存储<font color="red">实例方法</font>列表等信息。</p>
+</li>
+<li><p><font color="red">元类对象</font>存储<font color="red">类方法</font>列表等信息。</p>
+</li>
+</ul>
+<h2 id="对象、类对象和元类对象之间的关系"><a href="#对象、类对象和元类对象之间的关系" class="headerlink" title="对象、类对象和元类对象之间的关系"></a>对象、类对象和元类对象之间的关系</h2><p><img src="/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&amp;消息传递/449095-3e972ec16703c54d.png" alt="449095-3e972ec16703c54d"></p>
+<ul>
+<li><p>每一个对象本质上都是一个类对象的实例。其中类定义了成员变量和成员方法的列表。对象通过对象的isa指针指向类对象</p>
+</li>
+<li><p>每 一个类本质上都是一个对象，类对象其实是元类对象（meteClass）的实例。元类对象定义了类方法的列表。类对象通过类对象的isa指针指向元类</p>
+</li>
+<li><p>所有的元类最终继承一个根元类对象，根元类对象isa指针指向本身，形成一个封闭的内循环</p>
+</li>
+<li><p><font color="red">根元类对象的superclass指针指向根类对象</font>，比如我们调用一个类方法，系统就会从类的元类沿着父类往上查找直到根元类，如果根元类找不到该方法实现，那就会找到根元类的父类根类对象中的同名实例方法来实现。</p>
+</li>
+</ul>
 <blockquote>
-<p>关于实例变量是否存在，系统提供了一个可屏蔽的开关+ (BOOL)accessInstanceVariablesDirctly，这个方法默认实现返回的是YES，也就是说与我们这个key相同或者相似的一个成员变量是存在的，那我们认为这个成员变量是存在的，如果我们重写这个方法返回NO，即使我们访问这个key同名的成员变量是存在的，那么我们也没有办法通过这个key去获取对应的值。</p>
+<p>（面试题）如果我们调用的类方法没有对应的实现，但是有对应同名的实例方法实现，会不会产生实际方法调用？</p>
+<p>​    会，就是因为根元类对象的superclass指针指向根类对象，当我们在元类对象中找不到对应的类方法实现后，就会沿着跟元类对象superclass指针去到根类对象中查找同名的实例方法实现。</p>
 </blockquote>
-<h2 id="Accessor-Method-is-exist-（访问器方法是否存在）"><a href="#Accessor-Method-is-exist-（访问器方法是否存在）" class="headerlink" title="Accessor Method is exist （访问器方法是否存在）"></a>Accessor Method is exist （访问器方法是否存在）</h2><p>遵循key相同或者相似原则</p>
-<ul>
-<li><getkey>    get方法，满足驼峰命名</getkey></li>
-<li><key>        属性名称</key></li>
-<li><iskey>     对应的成员变量</iskey></li>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;#import &quot;Mobile.h&quot;</span><br><span class="line">&gt;@interface Phone: Moblie</span><br><span class="line">&gt;@end</span><br><span class="line">&gt;</span><br><span class="line">&gt;@implementation Phone </span><br><span class="line">&gt;- (id)init &#123;</span><br><span class="line">&gt;	self = [super init];</span><br><span class="line">&gt;	if (self) &#123;</span><br><span class="line">&gt;        NSLog(@&quot;%@&quot;, NSStringFromClass([self class]));</span><br><span class="line">&gt;        NSLog(@&quot;%@&quot;, NSStringFromClass([super calss]));</span><br><span class="line">&gt;	&#125;</span><br><span class="line">&gt;	return self;</span><br><span class="line">&gt;&#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>（笔试题）请问以上代码输出什么？</p>
+<p>​    Phone，Phone</p>
+<p>​    [self class]在编译器层面上会转成objc_msgSend(self, @selector(class))，这时候会从Phone的类对象的方法列表沿superclass指针逐级上找，最终找到根类对象的class实现并返回给调用方。</p>
+<p>​    [super class]在编译器层面上会转成objc_msgSendSuper(objc_super <em>super, @selector(class))，这时候会从Moblie类对象的方法列表开始沿superclass指针逐级上找，最终找到根类对象的class实现并返回给(objc_super </em>super)-&gt;receiver，就是self。</p>
+</blockquote>
+<h1 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void objc_msgSend(void /*id self, SEL op,...*/)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[self class];</span><br><span class="line">  </span><br><span class="line">// 通过编译器转成以下函数调用</span><br><span class="line">  </span><br><span class="line">objc_msgSend(self, @selector(class));</span><br></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">void objc_msgSendSuper(void /*struct objc_super *super, SEL op, ...*/)</span><br><span class="line"></span><br><span class="line">struct objc_super &#123;</span><br><span class="line">    // Specifies an instance of a class</span><br><span class="line">    __unsafe_unretained id receiver;  // 当前对象，self</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> [super class];</span><br><span class="line"></span><br><span class="line">// 通过编译器转成以下函数调用，实际接收者还是objc_super-&gt;receiver，就是对象实例self</span><br><span class="line"></span><br><span class="line">objc_msgSendSuper(objc_super *super, @selector(class));</span><br></pre></td></tr></table></figure>
+<h2 id="缓存查找"><a href="#缓存查找" class="headerlink" title="缓存查找"></a>缓存查找</h2><p> 给定值的<font color="red">SEL</font>，目标值是对应<font color="red">bucket_t</font>中的<font color="red">IMP</font>。</p>
+<p><img src="/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&amp;消息传递/57E7FDC9-DF3E-46F5-BA12-274D9DAA5D52.png" alt="57E7FDC9-DF3E-46F5-BA12-274D9DAA5D52"></p>
+<p>根据给的方法选择器SEL通过一个函数去映射一个bucket_t在数组当中的位置，这一步骤就是<font color="red">Hash查找（哈希查找）</font>。</p>
+<p>Hash查找（哈希查找）就是来解决查找效率的问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f(key) = key &amp; mask;</span><br><span class="line"></span><br><span class="line">哈希查找实际上就是通过给定一个值，比如方法选择器，然后经过哈希函数算法算出这个值，实际上就是这个值在数组中的一个索引位置。</span><br></pre></td></tr></table></figure>
+<h2 id="当前类查找"><a href="#当前类查找" class="headerlink" title="当前类查找"></a>当前类查找</h2><ul>
+<li>对于<font color="red">已排序好</font>的列表，采用<font color="red">二分查找</font>算法查找方法对应执行函数。</li>
+<li>对于<font color="red">没有排序好</font>的列表，采用<font color="red">一般遍历</font>查找方法查找对应执行函数。</li>
 </ul>
-<h2 id="Instance-var-（实例变量）"><a href="#Instance-var-（实例变量）" class="headerlink" title="Instance var （实例变量）"></a>Instance var （实例变量）</h2><p>同名的实例变量或者相似名称的成员变量</p>
-<ul>
-<li>_key</li>
-<li>_isKey</li>
-<li>key</li>
-<li>isKey</li>
-</ul>
-<h1 id="setValue-ForKey-实现逻辑"><a href="#setValue-ForKey-实现逻辑" class="headerlink" title="setValue:ForKey:实现逻辑"></a>setValue:ForKey:实现逻辑</h1><p><img src="/2019/01/31/objective-c/KVC/389857C5-75F4-4B27-913C-39D93D39C9F5.png" alt="389857C5-75F4-4B27-913C-39D93D39C9F5"></p>
+<h2 id="父类逐级查找"><a href="#父类逐级查找" class="headerlink" title="父类逐级查找"></a>父类逐级查找</h2><p><img src="/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&amp;消息传递/14AC2C10-67E3-47F1-8E57-9DB06F057410.png" alt="14AC2C10-67E3-47F1-8E57-9DB06F057410"></p>
+<h2 id="消息传递总结"><a href="#消息传递总结" class="headerlink" title="消息传递总结"></a>消息传递总结</h2><p><img src="/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&amp;消息传递/7FDC5818-2DA8-4B5C-941C-542B65229DB8.png" alt="7FDC5818-2DA8-4B5C-941C-542B65229DB8"></p>
+<font color="green">消息传递的流程就是一开始查缓存，缓存没有命中就查当前类的方法列表，没有命中再通过superclass指针逐级往上查父类对象的方法列表，如果都没有再转到消息转发流程。</font>
+
+<font color="green">缓存查找是拿方法选择器通过哈希查找算法算出bucket_t在数组中的索引，通过索引拿到bucket_t中的IMP</font>
+
+<font color="green">当前类方法查找如果遇到排序好的列表，则通过二分查找查找对应的执行函数，如果遇到没有排序好的列表，则通过一般遍历查找执行函数。</font>
+
+<font color="green">逐级父类方法查找是根据superclass指针，首先判断superclass指针是否为nil，如果为nil，至证明无方法命中得到消息转发流程去，如果不为nil，则跟之前步骤一则，先看缓存后再看类方法，如果没有命中，再通过superclass指针继续重复此步骤。</font>
 
           
         
@@ -567,6 +595,172 @@
 <li>使用setValue:forKey:改变值KVO才会生效。</li>
 <li>成员变量直接修改需<font color="red">手动添加</font>KVO才会生效。</li>
 </ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/KVC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ifunnyy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/31/objective-c/KVC/" itemprop="url">KVC</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T13:46:00+08:00">
+                2019-01-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/objective-c/" itemprop="url" rel="index">
+                    <span itemprop="name">objective-c</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h1><p>KVC是Key-value coding的缩写。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (id)valueForKey:(NSString *)key;</span><br><span class="line"></span><br><span class="line">- (void)setValue:(id)value forKey:(NSString *)key;</span><br></pre></td></tr></table></figure>
+<h1 id="valueForKey实现逻辑"><a href="#valueForKey实现逻辑" class="headerlink" title="valueForKey实现逻辑"></a>valueForKey实现逻辑</h1><p><img src="/2019/01/31/objective-c/KVC/DA2C8749-9361-42F9-91A0-4CFE33CF234B.png" alt="DA2C8749-9361-42F9-91A0-4CFE33CF234B"></p>
+<ol>
+<li>系统会判断通过这个key访问的实例变量是否有相应的get方法，有则调用并返回。</li>
+<li>没有则会判断实例变量是否存在，存在则获取值并返回。</li>
+<li>不存在则会调用valueForUndefinedKey:方法并抛出NSUndefinedKeyException这个未定义key的异常。</li>
+</ol>
+<blockquote>
+<p>关于实例变量是否存在，系统提供了一个可屏蔽的开关+ (BOOL)accessInstanceVariablesDirctly，这个方法默认实现返回的是YES，也就是说与我们这个key相同或者相似的一个成员变量是存在的，那我们认为这个成员变量是存在的，如果我们重写这个方法返回NO，即使我们访问这个key同名的成员变量是存在的，那么我们也没有办法通过这个key去获取对应的值。</p>
+</blockquote>
+<h2 id="Accessor-Method-is-exist-（访问器方法是否存在）"><a href="#Accessor-Method-is-exist-（访问器方法是否存在）" class="headerlink" title="Accessor Method is exist （访问器方法是否存在）"></a>Accessor Method is exist （访问器方法是否存在）</h2><p>遵循key相同或者相似原则</p>
+<ul>
+<li><getkey>    get方法，满足驼峰命名</getkey></li>
+<li><key>        属性名称</key></li>
+<li><iskey>     对应的成员变量</iskey></li>
+</ul>
+<h2 id="Instance-var-（实例变量）"><a href="#Instance-var-（实例变量）" class="headerlink" title="Instance var （实例变量）"></a>Instance var （实例变量）</h2><p>同名的实例变量或者相似名称的成员变量</p>
+<ul>
+<li>_key</li>
+<li>_isKey</li>
+<li>key</li>
+<li>isKey</li>
+</ul>
+<h1 id="setValue-ForKey-实现逻辑"><a href="#setValue-ForKey-实现逻辑" class="headerlink" title="setValue:ForKey:实现逻辑"></a>setValue:ForKey:实现逻辑</h1><p><img src="/2019/01/31/objective-c/KVC/389857C5-75F4-4B27-913C-39D93D39C9F5.png" alt="389857C5-75F4-4B27-913C-39D93D39C9F5"></p>
 
           
         
@@ -1123,157 +1317,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/扩展（Extension）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ifunnyy">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/31/objective-c/扩展（Extension）/" itemprop="url">扩展（Extension）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T13:46:00+08:00">
-                2019-01-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/objective-c/" itemprop="url" rel="index">
-                    <span itemprop="name">objective-c</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="扩展能做什么"><a href="#扩展能做什么" class="headerlink" title="扩展能做什么"></a>扩展能做什么</h1><ul>
-<li>声明私有属性</li>
-<li>声明私有变量</li>
-<li>声明私有成员变量</li>
-</ul>
-<h1 id="扩展特点"><a href="#扩展特点" class="headerlink" title="扩展特点"></a>扩展特点</h1><ul>
-<li>编译时决议。</li>
-<li>只以声明的形式存在，多数情况下寄生于宿主类的.m中。</li>
-<li>不能为系统类添加扩展。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/分类（Category）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1689,6 +1732,157 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/扩展（Extension）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ifunnyy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/31/objective-c/扩展（Extension）/" itemprop="url">扩展（Extension）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T13:46:00+08:00">
+                2019-01-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/objective-c/" itemprop="url" rel="index">
+                    <span itemprop="name">objective-c</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="扩展能做什么"><a href="#扩展能做什么" class="headerlink" title="扩展能做什么"></a>扩展能做什么</h1><ul>
+<li>声明私有属性</li>
+<li>声明私有变量</li>
+<li>声明私有成员变量</li>
+</ul>
+<h1 id="扩展特点"><a href="#扩展特点" class="headerlink" title="扩展特点"></a>扩展特点</h1><ul>
+<li>编译时决议。</li>
+<li>只以声明的形式存在，多数情况下寄生于宿主类的.m中。</li>
+<li>不能为系统类添加扩展。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/objective-c/通知（NSNotification）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1823,314 +2017,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/ios/Runtime数据结构/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Johnny">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ifunnyy">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/31/ios/Runtime数据结构/" itemprop="url">runtime数据结构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T00:12:00+08:00">
-                2019-01-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><ul>
-<li>objc_object<ul>
-<li>对象</li>
-</ul>
-</li>
-<li>objc_class<ul>
-<li>类，类对象</li>
-</ul>
-</li>
-<li>isa指针<ul>
-<li>共用体isa_t</li>
-</ul>
-</li>
-<li>method_t<ul>
-<li>方法定义</li>
-</ul>
-</li>
-</ul>
-<h2 id="objc-object"><a href="#objc-object" class="headerlink" title="objc_object"></a>objc_object</h2><p><img src="/2019/01/31/ios/Runtime数据结构/33070F0E-F45F-4BC1-AFD5-9E3176410E83.png" alt="33070F0E-F45F-4BC1-AFD5-9E3176410E83"></p>
-<font color="green">平时我们使用的所有对象都是id类型的，对应runtime中objc_object结构体</font>
-
-<ul>
-<li>isa_t<ul>
-<li>共用体</li>
-</ul>
-</li>
-<li>关于isa操作相关<ul>
-<li>比如通过objc_object这个结构体来获取它的isa所指向的类对象，包括通过类对象的isa指针获取它的元类对象</li>
-</ul>
-</li>
-<li>弱引用相关<ul>
-<li>比如标记一个对象是否曾经弱引用指针</li>
-</ul>
-</li>
-<li>关联对象相关<ul>
-<li>比如这个对象我们为它设置了一些关联属性和关联方法</li>
-</ul>
-</li>
-<li>内存管理相关<ul>
-<li>比如MRC下的retain和release，或者ARC和MRC下都可以用到的autoreleasepool</li>
-</ul>
-</li>
-</ul>
-<h2 id="objc-class"><a href="#objc-class" class="headerlink" title="objc_class"></a>objc_class</h2><p><img src="/2019/01/31/ios/Runtime数据结构/858A8E75-50E2-461F-B5CD-43460D412F88.png" alt="858A8E75-50E2-461F-B5CD-43460D412F88"></p>
-<font color="green">OC中所使用的Class实际上对应的是runtime中objc_class这个结构体</font>
-
-<font color="red">objc_class继承自objc_object，所以Class是个对象，类对象</font>
-
-<ul>
-<li><font color="red">Class</font> superClass<ul>
-<li>指向父类对象</li>
-</ul>
-</li>
-<li><p><font color="red">cache_t</font> cache</p>
-<ul>
-<li>方法缓存结构</li>
-</ul>
-</li>
-<li><p><font color="red">class_data_bits_t</font> bits</p>
-<ul>
-<li>实际关于一个类定义所定义的变量、属性，包括方法都在bits里面</li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>（面试题）Class是否是对象</p>
-<p>​    是，类对象，因为它继承自objc_object。</p>
-</blockquote>
-<h2 id="isa指针"><a href="#isa指针" class="headerlink" title="isa指针"></a>isa指针</h2><p>共用体isa_t</p>
-<p><img src="/2019/01/31/ios/Runtime数据结构/507F59A9-A72C-4961-B9D6-2E7506D96C66.png" alt="507F59A9-A72C-4961-B9D6-2E7506D96C66"></p>
-<font color="green">isa_t在32位或者64位架构上面，实际下都是一串32位或者64位0或者1数字</font>
-
-<ul>
-<li>指针型isa<ul>
-<li>isa的值代表Class的地址</li>
-</ul>
-</li>
-<li>非指针型isa<ul>
-<li>isa的值的部分代表Class的地址</li>
-<li>剩下的部分可以存储一些其他内容来达到节省内存的目的</li>
-</ul>
-</li>
-</ul>
-<h2 id="isa指向"><a href="#isa指向" class="headerlink" title="isa指向"></a>isa指向</h2><ul>
-<li>关于<font color="red">对象</font>，其指向<font color="red">类对象</font>。<ul>
-<li>实例   —isa—&gt;   Class</li>
-<li>我们通过一个<font color="red">实例</font>去调用<font color="red">实例方法</font>，就是通过<font color="red">对象的isa指针</font>到它的<font color="red">类对象</font>进行方法查找</li>
-</ul>
-</li>
-<li>关于<font color="red">类对象</font>，其指向<font color="red">元类对象（MeteClass）</font>。<ul>
-<li>Class   —isa—&gt;   MetaClass</li>
-<li>我们通过一个<font color="red">类</font>去调用<font color="red">类方法</font>，就是通过<font color="red">类对象的isa指针</font>到它的<font color="red">元类</font>去进行方法查找</li>
-</ul>
-</li>
-</ul>
-<h2 id="cache-t"><a href="#cache-t" class="headerlink" title="cache_t"></a>cache_t</h2><ul>
-<li>用于<font color="red">快速</font>查找方法执行函数<ul>
-<li>比如我们调用一个方法的时候，如果之前调用并缓存起来，就不用到方法列表进行遍历查找</li>
-</ul>
-</li>
-<li>是可<font color="red">增量扩展</font>的<font color="red">哈希表</font>结构<ul>
-<li>会根据存储增量去扩大内存空间</li>
-<li>用哈希表是为了增加查找效率</li>
-</ul>
-</li>
-<li>是<font color="red">局部性原理</font>的最佳应用<ul>
-<li>把平时调用频次最高的方法放在缓存中</li>
-<li>时间局部性是指被引用过的存储器位置很可能会被再次引用</li>
-<li>空间局部性是指被引用过的存储器位置附近的数据很可能将被引用</li>
-</ul>
-</li>
-</ul>
-<p><img src="/2019/01/31/ios/Runtime数据结构/62E55D07-5139-4E95-BFEE-3673E274409E.png" alt="62E55D07-5139-4E95-BFEE-3673E274409E"></p>
-<h2 id="class-data-bits-t"><a href="#class-data-bits-t" class="headerlink" title="class_data_bits_t"></a>class_data_bits_t</h2><ul>
-<li><font color="red">class_data_bits_t</font>主要是对<font color="red">class_rw_t</font>的封装<ul>
-<li>class_rw_t<font color="red">可读可写</font>，就说明我们可以随时创建分类来给这个类添加属性和方法</li>
-</ul>
-</li>
-<li><font color="red">class_rw_t</font>代表了类相关的<font color="red">读写</font>信息，对<font color="red">class_ro_t</font>的封装<ul>
-<li>class_ro_t<font color="red">只读</font>，当我们创建一个类的时候为它添加的成员变量和方法列表，在之后就没办法修改了</li>
-</ul>
-</li>
-<li><font color="red">class_ro_t</font>代表了类相关的<font color="red">只读</font>信息</li>
-</ul>
-<h2 id="class-rw-t"><a href="#class-rw-t" class="headerlink" title="class_rw_t"></a>class_rw_t</h2><p><img src="/2019/01/31/ios/Runtime数据结构/D7BDBFEA-4BDF-4730-BB82-C954073E1433.png" alt="D7BDBFEA-4BDF-4730-BB82-C954073E1433"></p>
-<font color="green">我们在为一个类添加分类的协议、属性和方法就是对应上图的protocols、properties和methods</font>
-
-<p>protocols、properties和methods这三个结构都<font color="red">继承</font>于list_array_tt这个<font color="red">二维数组</font></p>
-<h2 id="class-ro-t"><a href="#class-ro-t" class="headerlink" title="class_ro_t"></a>class_ro_t</h2><p><img src="/2019/01/31/ios/Runtime数据结构/7B5FAA7A-0985-4E79-AD36-32E0C5D5A81B.png" alt="7B5FAA7A-0985-4E79-AD36-32E0C5D5A81B"></p>
-<ul>
-<li>name：类名。<ul>
-<li>平时我们用的NSClassFromString(@”ClassName”)，通过String获取一个类</li>
-</ul>
-</li>
-<li>ivars：类的成员变量</li>
-<li>properties：类的属性<ul>
-<li><font color="red">原始定义的属性</font></li>
-</ul>
-</li>
-<li>protocols：类遵从的协议<ul>
-<li><font color="red">原始遵从的协议</font></li>
-</ul>
-</li>
-<li>methodList：类添加的方法列表<ul>
-<li><font color="red">原始定义的方法</font></li>
-<li>class_ro_t的方法列表和class_rw_t的方法列表是有区别的，前者是一维数组，后者是二维数组</li>
-</ul>
-</li>
-</ul>
-<h2 id="method-t"><a href="#method-t" class="headerlink" title="method_t"></a>method_t</h2><p><img src="/2019/01/31/ios/Runtime数据结构/6D6C466F-8252-40EC-AE60-199083A66373.png" alt="6D6C466F-8252-40EC-AE60-199083A66373"></p>
-<ul>
-<li>IMP：无类型的函数指针，函数体。<ul>
-<li>IMP指针是指向实现函数的指针, 通过SEL取得IMP, objc_msgSend来执行实现方法。</li>
-</ul>
-</li>
-</ul>
-<h2 id="Type-Encodings"><a href="#Type-Encodings" class="headerlink" title="Type Encodings"></a>Type Encodings</h2><p><img src="/2019/01/31/ios/Runtime数据结构/F7127E65-A1D1-4D2C-8DD4-ABB48969BE5C.png" alt="F7127E65-A1D1-4D2C-8DD4-ABB48969BE5C"></p>
-<ul>
-<li>const char *types;<ul>
-<li>不可变的字符指针</li>
-<li>第一位永远都是函数的返回值</li>
-</ul>
-</li>
-</ul>
-<font color="green">调用一个方法，在runtime层面上都会转成objc_msgsend这样的函数调用，函数调用的第一个参数和第二个参数是固定的，并且是不可变的，第一个参数必须是id类型的，为消息的接收者，比如self这个对象，第二个是选择器SEL。</font>
-
-<h1 id="整体数据结构"><a href="#整体数据结构" class="headerlink" title="整体数据结构"></a>整体数据结构</h1><p><img src="/2019/01/31/ios/Runtime数据结构/64D2B528-5AD9-42C3-B109-FB012EC19DB6.png" alt="64D2B528-5AD9-42C3-B109-FB012EC19DB6"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2185,7 +2071,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

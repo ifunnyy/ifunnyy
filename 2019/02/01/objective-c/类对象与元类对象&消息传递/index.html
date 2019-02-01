@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="对象、类对象、元类对象 类对象存储实例方法列表等信息。  元类对象存储类方法列表等信息。   对象、类对象和元类对象之间的关系  每一个对象本质上都是一个类对象的实例。其中类定义了成员变量和成员方法的列表。对象通过对象的isa指针指向类对象  每 一个类本质上都是一个对象，类对象其实是元类对象（meteClass）的实例。元类对象定义了类方法的列表。类对象通过类对象的isa指针指向元类  所有的元">
+<meta property="og:type" content="article">
+<meta property="og:title" content="类对象与元类对象&amp;消息传递">
+<meta property="og:url" content="http://yoursite.com/2019/02/01/objective-c/类对象与元类对象&消息传递/index.html">
+<meta property="og:site_name" content="ifunnyy">
+<meta property="og:description" content="对象、类对象、元类对象 类对象存储实例方法列表等信息。  元类对象存储类方法列表等信息。   对象、类对象和元类对象之间的关系  每一个对象本质上都是一个类对象的实例。其中类定义了成员变量和成员方法的列表。对象通过对象的isa指针指向类对象  每 一个类本质上都是一个对象，类对象其实是元类对象（meteClass）的实例。元类对象定义了类方法的列表。类对象通过类对象的isa指针指向元类  所有的元">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&消息传递/449095-3e972ec16703c54d.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&消息传递/57E7FDC9-DF3E-46F5-BA12-274D9DAA5D52.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&消息传递/14AC2C10-67E3-47F1-8E57-9DB06F057410.png">
+<meta property="og:image" content="http://yoursite.com/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&消息传递/7FDC5818-2DA8-4B5C-941C-542B65229DB8.png">
+<meta property="og:updated_time" content="2019-02-01T09:14:16.218Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="类对象与元类对象&amp;消息传递">
+<meta name="twitter:description" content="对象、类对象、元类对象 类对象存储实例方法列表等信息。  元类对象存储类方法列表等信息。   对象、类对象和元类对象之间的关系  每一个对象本质上都是一个类对象的实例。其中类定义了成员变量和成员方法的列表。对象通过对象的isa指针指向类对象  每 一个类本质上都是一个对象，类对象其实是元类对象（meteClass）的实例。元类对象定义了类方法的列表。类对象通过类对象的isa指针指向元类  所有的元">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&消息传递/449095-3e972ec16703c54d.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: false,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/01/objective-c/类对象与元类对象&消息传递/"/>
+
+
+
+
+
+  <title>类对象与元类对象&消息传递 | ifunnyy</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?95e48dc1b0014483f90b963827cc265d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ifunnyy</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/01/objective-c/类对象与元类对象&消息传递/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Johnny">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ifunnyy">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">类对象与元类对象&消息传递</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-01T13:46:00+08:00">
+                2019-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/objective-c/" itemprop="url" rel="index">
+                    <span itemprop="name">objective-c</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="对象、类对象、元类对象"><a href="#对象、类对象、元类对象" class="headerlink" title="对象、类对象、元类对象"></a>对象、类对象、元类对象</h1><ul>
+<li><p><font color="red">类对象</font>存储<font color="red">实例方法</font>列表等信息。</p>
+</li>
+<li><p><font color="red">元类对象</font>存储<font color="red">类方法</font>列表等信息。</p>
+</li>
+</ul>
+<h2 id="对象、类对象和元类对象之间的关系"><a href="#对象、类对象和元类对象之间的关系" class="headerlink" title="对象、类对象和元类对象之间的关系"></a>对象、类对象和元类对象之间的关系</h2><p><img src="/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&amp;消息传递/449095-3e972ec16703c54d.png" alt="449095-3e972ec16703c54d"></p>
+<ul>
+<li><p>每一个对象本质上都是一个类对象的实例。其中类定义了成员变量和成员方法的列表。对象通过对象的isa指针指向类对象</p>
+</li>
+<li><p>每 一个类本质上都是一个对象，类对象其实是元类对象（meteClass）的实例。元类对象定义了类方法的列表。类对象通过类对象的isa指针指向元类</p>
+</li>
+<li><p>所有的元类最终继承一个根元类对象，根元类对象isa指针指向本身，形成一个封闭的内循环</p>
+</li>
+<li><p><font color="red">根元类对象的superclass指针指向根类对象</font>，比如我们调用一个类方法，系统就会从类的元类沿着父类往上查找直到根元类，如果根元类找不到该方法实现，那就会找到根元类的父类根类对象中的同名实例方法来实现。</p>
+</li>
+</ul>
+<blockquote>
+<p>（面试题）如果我们调用的类方法没有对应的实现，但是有对应同名的实例方法实现，会不会产生实际方法调用？</p>
+<p>​    会，就是因为根元类对象的superclass指针指向根类对象，当我们在元类对象中找不到对应的类方法实现后，就会沿着跟元类对象superclass指针去到根类对象中查找同名的实例方法实现。</p>
+</blockquote>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&gt;#import &quot;Mobile.h&quot;</span><br><span class="line">&gt;@interface Phone: Moblie</span><br><span class="line">&gt;@end</span><br><span class="line">&gt;</span><br><span class="line">&gt;@implementation Phone </span><br><span class="line">&gt;- (id)init &#123;</span><br><span class="line">&gt;	self = [super init];</span><br><span class="line">&gt;	if (self) &#123;</span><br><span class="line">&gt;        NSLog(@&quot;%@&quot;, NSStringFromClass([self class]));</span><br><span class="line">&gt;        NSLog(@&quot;%@&quot;, NSStringFromClass([super calss]));</span><br><span class="line">&gt;	&#125;</span><br><span class="line">&gt;	return self;</span><br><span class="line">&gt;&#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>（笔试题）请问以上代码输出什么？</p>
+<p>​    Phone，Phone</p>
+<p>​    [self class]在编译器层面上会转成objc_msgSend(self, @selector(class))，这时候会从Phone的类对象的方法列表沿superclass指针逐级上找，最终找到根类对象的class实现并返回给调用方。</p>
+<p>​    [super class]在编译器层面上会转成objc_msgSendSuper(objc_super <em>super, @selector(class))，这时候会从Moblie类对象的方法列表开始沿superclass指针逐级上找，最终找到根类对象的class实现并返回给(objc_super </em>super)-&gt;receiver，就是self。</p>
+</blockquote>
+<h1 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void objc_msgSend(void /*id self, SEL op,...*/)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[self class];</span><br><span class="line">  </span><br><span class="line">// 通过编译器转成以下函数调用</span><br><span class="line">  </span><br><span class="line">objc_msgSend(self, @selector(class));</span><br></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">void objc_msgSendSuper(void /*struct objc_super *super, SEL op, ...*/)</span><br><span class="line"></span><br><span class="line">struct objc_super &#123;</span><br><span class="line">    // Specifies an instance of a class</span><br><span class="line">    __unsafe_unretained id receiver;  // 当前对象，self</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> [super class];</span><br><span class="line"></span><br><span class="line">// 通过编译器转成以下函数调用，实际接收者还是objc_super-&gt;receiver，就是对象实例self</span><br><span class="line"></span><br><span class="line">objc_msgSendSuper(objc_super *super, @selector(class));</span><br></pre></td></tr></table></figure>
+<h2 id="缓存查找"><a href="#缓存查找" class="headerlink" title="缓存查找"></a>缓存查找</h2><p> 给定值的<font color="red">SEL</font>，目标值是对应<font color="red">bucket_t</font>中的<font color="red">IMP</font>。</p>
+<p><img src="/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&amp;消息传递/57E7FDC9-DF3E-46F5-BA12-274D9DAA5D52.png" alt="57E7FDC9-DF3E-46F5-BA12-274D9DAA5D52"></p>
+<p>根据给的方法选择器SEL通过一个函数去映射一个bucket_t在数组当中的位置，这一步骤就是<font color="red">Hash查找（哈希查找）</font>。</p>
+<p>Hash查找（哈希查找）就是来解决查找效率的问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f(key) = key &amp; mask;</span><br><span class="line"></span><br><span class="line">哈希查找实际上就是通过给定一个值，比如方法选择器，然后经过哈希函数算法算出这个值，实际上就是这个值在数组中的一个索引位置。</span><br></pre></td></tr></table></figure>
+<h2 id="当前类查找"><a href="#当前类查找" class="headerlink" title="当前类查找"></a>当前类查找</h2><ul>
+<li>对于<font color="red">已排序好</font>的列表，采用<font color="red">二分查找</font>算法查找方法对应执行函数。</li>
+<li>对于<font color="red">没有排序好</font>的列表，采用<font color="red">一般遍历</font>查找方法查找对应执行函数。</li>
+</ul>
+<h2 id="父类逐级查找"><a href="#父类逐级查找" class="headerlink" title="父类逐级查找"></a>父类逐级查找</h2><p><img src="/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&amp;消息传递/14AC2C10-67E3-47F1-8E57-9DB06F057410.png" alt="14AC2C10-67E3-47F1-8E57-9DB06F057410"></p>
+<h2 id="消息传递总结"><a href="#消息传递总结" class="headerlink" title="消息传递总结"></a>消息传递总结</h2><p><img src="/2019/02/01/objective-c/类对象与元类对象&消息传递/类对象与元类对象&amp;消息传递/7FDC5818-2DA8-4B5C-941C-542B65229DB8.png" alt="7FDC5818-2DA8-4B5C-941C-542B65229DB8"></p>
+<font color="green">消息传递的流程就是一开始查缓存，缓存没有命中就查当前类的方法列表，没有命中再通过superclass指针逐级往上查父类对象的方法列表，如果都没有再转到消息转发流程。</font>
+
+<font color="green">缓存查找是拿方法选择器通过哈希查找算法算出bucket_t在数组中的索引，通过索引拿到bucket_t中的IMP</font>
+
+<font color="green">当前类方法查找如果遇到排序好的列表，则通过二分查找查找对应的执行函数，如果遇到没有排序好的列表，则通过一般遍历查找执行函数。</font>
+
+<font color="green">逐级父类方法查找是根据superclass指针，首先判断superclass指针是否为nil，如果为nil，至证明无方法命中得到消息转发流程去，如果不为nil，则跟之前步骤一则，先看缓存后再看类方法，如果没有命中，再通过superclass指针继续重复此步骤。</font>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/31/objective-c/KVO/" rel="next" title="KVO">
+                <i class="fa fa-chevron-left"></i> KVO
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Johnny" />
+            
+              <p class="site-author-name" itemprop="name">Johnny</p>
+              <p class="site-description motion-element" itemprop="description">仰天大笑出门去 我辈岂是蓬蒿人</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#对象、类对象、元类对象"><span class="nav-number">1.</span> <span class="nav-text">对象、类对象、元类对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对象、类对象和元类对象之间的关系"><span class="nav-number">1.1.</span> <span class="nav-text">对象、类对象和元类对象之间的关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消息传递"><span class="nav-number">2.</span> <span class="nav-text">消息传递</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存查找"><span class="nav-number">2.1.</span> <span class="nav-text">缓存查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#当前类查找"><span class="nav-number">2.2.</span> <span class="nav-text">当前类查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#父类逐级查找"><span class="nav-number">2.3.</span> <span class="nav-text">父类逐级查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息传递总结"><span class="nav-number">2.4.</span> <span class="nav-text">消息传递总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"> ifunnyy | Johnny</span>
+
+  
+</div>
+
+
+  <div class="powered-by"> _(:з」∠)_</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">博客 &mdash;  v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
